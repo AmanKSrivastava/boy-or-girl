@@ -30,7 +30,7 @@
       }
       body {
         margin: 0;
-        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
           "Helvetica Neue", Arial;
         background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
         color: var(--text);
@@ -46,21 +46,21 @@
       }
       .card {
         background: var(--card-bg);
-        border-radius: calc(var(--radius) + 6px);
+        border-radius: calc(var(--radius)+6px);
         border: 1px solid rgba(212, 175, 55, 0.24);
         box-shadow: 0 24px 70px rgba(180, 145, 45, 0.2);
-        padding: 28px;
+        padding: 26px;
         position: relative;
         overflow: hidden;
         backdrop-filter: blur(10px);
       }
 
-      /* Golden shimmer header */
+      /* Header + shimmer */
       .header {
         text-align: center;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+        padding: 6px 0;
         position: relative;
-        padding: 8px 0;
       }
       .crest {
         font-family: "Playfair Display", serif;
@@ -70,7 +70,7 @@
       .title {
         font-family: "Playfair Display", serif;
         font-size: 30px;
-        margin: 6px 0 4px;
+        margin: 6px 0;
         color: var(--text);
         display: inline-block;
         position: relative;
@@ -83,7 +83,6 @@
         );
         border: 1px solid rgba(212, 175, 55, 0.18);
       }
-      /* shimmer */
       .title::before {
         content: "";
         position: absolute;
@@ -113,30 +112,53 @@
           left: 120%;
         }
       }
-
       .sub {
         color: var(--muted);
-        margin: 0 0 18px;
+        margin: 4px 0 10px;
         font-size: 14px;
       }
 
-      /* team counts (single source-of-truth) */
+      /* countdown under title */
+      .headerCount {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 12px 0 10px;
+      }
+      .countCard {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 10px;
+        padding: 8px 12px;
+        border: 1px solid rgba(212, 175, 55, 0.12);
+        min-width: 70px;
+        text-align: center;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .countLabel {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+        margin-top: 4px;
+      }
+
+      /* single authoritative counters (top) */
       .teams {
         display: flex;
         gap: 18px;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
       .team-pill {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 16px;
+        padding: 10px 18px;
         border-radius: 12px;
         background: linear-gradient(
           180deg,
-          rgba(255, 255, 255, 0.65),
-          rgba(255, 255, 255, 0.55)
+          rgba(255, 255, 255, 0.68),
+          rgba(255, 255, 255, 0.56)
         );
         border: 1px solid rgba(212, 175, 55, 0.16);
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.06);
@@ -155,7 +177,7 @@
         font-size: 18px;
       }
 
-      /* layout for choices + panel */
+      /* main layout */
       .grid {
         display: grid;
         grid-template-columns: 1fr 380px;
@@ -166,17 +188,20 @@
         .grid {
           grid-template-columns: 1fr;
         }
+        .team-pill {
+          min-width: auto;
+        }
       }
 
       .choices {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
       }
       .choice {
         background: linear-gradient(
           180deg,
-          rgba(255, 255, 255, 0.72),
+          rgba(255, 255, 255, 0.74),
           rgba(255, 255, 255, 0.64)
         );
         border-radius: 14px;
@@ -187,16 +212,15 @@
         gap: 16px;
         cursor: pointer;
         position: relative;
-        transition: transform 0.18s ease, box-shadow 0.18s ease,
-          border-color 0.18s ease;
+        transition: transform 0.16s ease, box-shadow 0.16s ease;
       }
       .choice:hover {
         transform: translateY(-6px);
-        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
       }
       .choice.selected {
         transform: translateY(-12px);
-        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 24px 56px rgba(0, 0, 0, 0.12);
         border-color: rgba(212, 175, 55, 0.28);
       }
       .emoji {
@@ -218,7 +242,6 @@
         color: var(--muted);
         font-size: 13px;
       }
-
       .choice::after {
         content: "";
         position: absolute;
@@ -232,7 +255,6 @@
         justify-content: center;
         font-weight: 900;
         font-size: 16px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
       }
       .choice.selected::after {
         display: flex;
@@ -248,7 +270,6 @@
         content: "✔";
       }
 
-      /* right panel */
       .panel {
         background: linear-gradient(
           180deg,
@@ -256,18 +277,23 @@
           rgba(255, 255, 255, 0.64)
         );
         border-radius: 14px;
-        padding: 18px;
+        padding: 16px;
         border: 1px solid rgba(212, 175, 55, 0.14);
       }
       .panel h3 {
         margin: 0 0 8px;
         font-family: "Playfair Display", serif;
       }
+      .panel .muted {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
       .inputs {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
       .inputs input {
         padding: 10px;
@@ -298,39 +324,13 @@
         color: var(--muted);
       }
 
-      /* countdown */
-      .countdown {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        margin-top: 12px;
-      }
-      .countCard {
-        background: rgba(255, 255, 255, 0.85);
-        border-radius: 10px;
-        padding: 8px 10px;
-        border: 1px solid rgba(212, 175, 55, 0.12);
-        min-width: 64px;
-        text-align: center;
-        font-weight: 800;
-        color: var(--text);
-      }
-      .countLabel {
-        font-size: 12px;
-        color: var(--muted);
-        font-weight: 600;
-      }
-
-      /* results removed from right panel per request - counts only at top */
-
       footer {
-        margin-top: 18px;
         text-align: center;
         color: var(--muted);
+        margin-top: 16px;
         font-size: 13px;
       }
 
-      /* thank you modal */
       .modalWrap {
         position: fixed;
         left: 0;
@@ -361,39 +361,7 @@
         color: #5b4b3a;
         margin: 8px 0 12px;
       }
-      .modal .btn {
-        margin-top: 6px;
-      }
 
-      /* audio control & enable button */
-      .audioCtl {
-        position: absolute;
-        right: 16px;
-        top: 14px;
-        background: transparent;
-        border: 1px solid rgba(212, 175, 55, 0.12);
-        padding: 8px;
-        border-radius: 10px;
-        cursor: pointer;
-        color: var(--muted);
-      }
-      .enableSound {
-        position: fixed;
-        left: 50%;
-        top: 14px;
-        transform: translateX(-50%);
-        z-index: 1000;
-        padding: 8px 12px;
-        border-radius: 10px;
-        background: linear-gradient(90deg, #f9e6b0, #f3d67a);
-        border: 0;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-        display: none;
-        cursor: pointer;
-        font-weight: 800;
-      }
-
-      /* confetti canvas */
       #confetti {
         position: absolute;
         left: 0;
@@ -423,17 +391,6 @@
       <div class="card" id="card">
         <canvas id="confetti"></canvas>
 
-        <button
-          id="audioToggle"
-          class="audioCtl"
-          aria-label="Play music (toggle)"
-        >
-          🔈 Pause music
-        </button>
-        <button id="enableSound" class="enableSound" style="display: none">
-          Enable sound
-        </button>
-
         <div class="header">
           <div class="crest">👑</div>
           <div class="title">Royal Baby Reveal</div>
@@ -441,8 +398,29 @@
             Aman & Akanksha invite you — predict whether it will be a prince or
             princess
           </p>
+
+          <!-- single countdown moved here -->
+          <div class="headerCount" aria-hidden="false">
+            <div class="countCard">
+              <div id="cdDays">0</div>
+              <div class="countLabel">Days</div>
+            </div>
+            <div class="countCard">
+              <div id="cdHours">0</div>
+              <div class="countLabel">Hours</div>
+            </div>
+            <div class="countCard">
+              <div id="cdMins">0</div>
+              <div class="countLabel">Mins</div>
+            </div>
+            <div class="countCard">
+              <div id="cdSecs">0</div>
+              <div class="countLabel">Secs</div>
+            </div>
+          </div>
         </div>
 
+        <!-- ONLY authoritative counts (top) -->
         <div class="teams" aria-hidden="false">
           <div class="team-pill">
             <span class="label">Boy Votes</span
@@ -455,8 +433,7 @@
         </div>
 
         <div class="grid">
-          <!-- choices -->
-          <div class="choices">
+          <div class="choices" aria-hidden="false">
             <div
               class="choice"
               id="boy"
@@ -486,55 +463,15 @@
                 <div class="desc">Choose if you predict a little princess</div>
               </div>
             </div>
-
-            <!-- small countdown for mobile -->
-            <div
-              style="margin-top: 8px; display: flex; justify-content: center"
-            >
-              <div style="text-align: center">
-                <div style="font-weight: 800; color: var(--muted)">
-                  Reveal Countdown
-                </div>
-                <div
-                  style="
-                    display: flex;
-                    gap: 8px;
-                    justify-content: center;
-                    margin-top: 8px;
-                  "
-                  id="countdownSmall"
-                ></div>
-              </div>
-            </div>
           </div>
 
-          <!-- right panel -->
-          <div class="panel">
+          <div class="panel" aria-hidden="false">
             <h3>Make your prediction</h3>
-            <div style="font-size: 13px; color: var(--muted)">
+            <div class="muted">
               Reveal Date: <strong>14 November 2025</strong>
             </div>
 
-            <div class="countdown" style="margin-top: 12px" id="countdown">
-              <div class="countCard">
-                <div id="cdDays">0</div>
-                <div class="countLabel">Days</div>
-              </div>
-              <div class="countCard">
-                <div id="cdHours">0</div>
-                <div class="countLabel">Hours</div>
-              </div>
-              <div class="countCard">
-                <div id="cdMins">0</div>
-                <div class="countLabel">Mins</div>
-              </div>
-              <div class="countCard">
-                <div id="cdSecs">0</div>
-                <div class="countLabel">Secs</div>
-              </div>
-            </div>
-
-            <div class="inputs" style="margin-top: 14px">
+            <div class="inputs" style="margin-top: 12px">
               <input id="name" placeholder="Your Name (optional)" />
               <input
                 id="relation"
@@ -542,7 +479,7 @@
               />
             </div>
 
-            <div class="cta">
+            <div class="cta" style="margin-top: 6px">
               <button class="btnMain" id="voteBtn">
                 Submit Your Prediction
               </button>
@@ -556,8 +493,8 @@
         </div>
 
         <footer>
-          Made with love for Aman & Akanksha — replace Formspree endpoint to
-          store results.
+          Made with love for Aman & Akanksha — votes saved to Firebase and
+          Formspree.
         </footer>
       </div>
     </div>
@@ -577,24 +514,17 @@
       </div>
     </div>
 
-    <!-- Audio: replace src with your audio file URL if you have one -->
-    <audio id="bgAudio" loop preload="auto">
-      <source
-        src="https://cdn.pixabay.com/download/audio/2022/02/08/audio_2b0f7b33a8.mp3?filename=calm-and-relaxing-ambient-11506.mp3"
-        type="audio/mpeg"
-      />
-      Your browser does not support audio.
-    </audio>
-
-    <!-- Firebase + App logic (anonymous auth + realtime votes) -->
+    <!-- FIREBASE + APP LOGIC (anonymous auth + realtime votes + Formspree) -->
     <script type="module">
-      // Firebase SDK (modular) imports
+      const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzkjneo";
+
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
       import {
         getDatabase,
         ref,
         set,
         onValue,
+        get,
       } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
       import {
         getAuth,
@@ -602,7 +532,7 @@
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
-      // --- YOUR FIREBASE CONFIG (you provided) ---
+      // Your Firebase config
       const firebaseConfig = {
         apiKey: "AIzaSyDJMam9PYVpprTjX-hSx4zqoqkp5AOEQaA",
         authDomain: "baby-prediction-2947c.firebaseapp.com",
@@ -613,12 +543,12 @@
         measurementId: "G-Y4LQT2ZRD5",
       };
 
-      // initialize
+      // init firebase
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
       const auth = getAuth(app);
 
-      // Elements & UI
+      // UI refs
       const choices = Array.from(document.querySelectorAll(".choice"));
       const boyCountEl = document.getElementById("boyCount");
       const girlCountEl = document.getElementById("girlCount");
@@ -626,66 +556,48 @@
       const shareBtn = document.getElementById("shareBtn");
       const nameInput = document.getElementById("name");
       const relInput = document.getElementById("relation");
-
-      // Modal
       const modalWrap = document.getElementById("modalWrap");
       const modalTitle = document.getElementById("modalTitle");
       const modalMsg = document.getElementById("modalMsg");
       const modalClose = document.getElementById("modalClose");
 
-      // Audio controls (kept)
-      const audio = document.getElementById("bgAudio");
-      const audioToggle = document.getElementById("audioToggle");
-      const enableSoundBtn = document.getElementById("enableSound");
-      let audioPlaying = false;
-      let autoplayAttempted = false;
-
-      // Countdown (target date)
-      const revealDate = new Date("2025-11-14T00:00:00");
       const cdDays = document.getElementById("cdDays");
       const cdHours = document.getElementById("cdHours");
       const cdMins = document.getElementById("cdMins");
       const cdSecs = document.getElementById("cdSecs");
-      const countdownSmall = document.getElementById("countdownSmall");
 
-      // firebase state
+      const revealDate = new Date("2025-11-14T00:00:00");
+
       let myUid = null;
 
-      // anonymous auth
+      // Anonymous auth
       async function startAuth() {
         try {
           await signInAnonymously(auth);
-        } catch (err) {
-          console.error("Auth error", err);
+        } catch (e) {
+          console.error("Auth error", e);
         }
       }
       onAuthStateChanged(auth, (user) => {
-        if (user) {
-          myUid = user.uid;
-          // console.log('Signed in as', myUid);
-        } else {
-          myUid = null;
-        }
+        myUid = user ? user.uid : null;
       });
       startAuth();
 
-      // Listen to /votes and compute counts in realtime
+      // Realtime listener -> authoritative counts
       const votesRef = ref(db, "votes");
       onValue(votesRef, (snap) => {
         const data = snap.val() || {};
         let boy = 0,
           girl = 0;
-        // iterate votes
         for (const uid in data) {
           const v = data[uid] && data[uid].vote;
           if (v === "boy") boy++;
           if (v === "girl") girl++;
         }
-        // update top counts (single source of truth)
         boyCountEl.textContent = boy;
         girlCountEl.textContent = girl;
 
-        // reflect my selection (if my vote exists in DB)
+        // highlight my vote
         if (myUid && data[myUid]) {
           const myVote = data[myUid].vote;
           choices.forEach((c) =>
@@ -694,34 +606,62 @@
         }
       });
 
-      // helper to submit vote (writes to /votes/{myUid})
+      // submit vote: write to Firebase and post to Formspree
       async function submitVote(voteValue) {
         if (!myUid) {
-          // try sign-in again (rare)
           await startAuth();
-          // short delay to let auth state propagate
-          await new Promise((r) => setTimeout(r, 300));
+          await new Promise((r) => setTimeout(r, 250));
         }
         if (!myUid) {
           alert("Unable to sign in. Please try again.");
           return;
         }
+        // read previous vote
+        let previousVote = "";
+        try {
+          const snap = await get(ref(db, `votes/${myUid}`));
+          const prev = snap.exists() ? snap.val() : null;
+          previousVote = prev && prev.vote ? prev.vote : "";
+        } catch (e) {
+          console.warn("read prev err", e);
+        }
+
         const payload = {
           vote: voteValue,
-          name: (nameInput && nameInput.value.trim()) || "",
-          relation: (relInput && relInput.value.trim()) || "",
+          name: (nameInput.value || "").trim(),
+          relation: (relInput.value || "").trim(),
           time: new Date().toISOString(),
         };
+
         try {
           await set(ref(db, `votes/${myUid}`), payload);
-          // realtime listener updates UI automatically
-        } catch (err) {
-          console.error("Error writing vote:", err);
-          alert("Could not record vote — check your connection.");
+        } catch (e) {
+          console.error("Firebase write error", e);
+          alert("Could not record vote — check connection.");
+          return;
+        }
+
+        // send to Formspree (non-blocking)
+        try {
+          const body = {
+            event: "vote",
+            previous_vote: previousVote || "",
+            new_vote: voteValue,
+            name: payload.name,
+            relation: payload.relation,
+            time: payload.time,
+          };
+          fetch(FORMSPREE_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }).catch((e) => console.warn("Formspree failed", e));
+        } catch (e) {
+          console.warn("Formspree error", e);
         }
       }
 
-      // UI selection logic
+      // UI selection
       let selectedValue = null;
       choices.forEach((c) => {
         c.addEventListener("click", () => {
@@ -737,7 +677,6 @@
         });
       });
 
-      // Vote button handler — overwrites previous vote in DB
       voteBtn.addEventListener("click", async () => {
         const toVote = selectedValue;
         if (!toVote) {
@@ -745,10 +684,8 @@
           return;
         }
         await submitVote(toVote);
-
-        // show personalized thank you
-        const nm = nameInput.value.trim();
-        const rel = relInput.value.trim();
+        const nm = (nameInput.value || "").trim(),
+          rel = (relInput.value || "").trim();
         const who = nm
           ? `${nm}${rel ? " (" + rel + ")" : ""}`
           : rel
@@ -758,12 +695,11 @@
         launchConfetti();
       });
 
-      // Share
       shareBtn.addEventListener("click", () => {
         const txt = encodeURIComponent(
           `Join Aman & Akanksha’s Royal Baby Reveal — Cast your prediction: ${location.href}`
         );
-        if (navigator.share) {
+        if (navigator.share)
           navigator
             .share({
               title: "Royal Baby Reveal",
@@ -771,10 +707,9 @@
               url: location.href,
             })
             .catch(() => {});
-        } else window.open("https://wa.me/?text=" + txt, "_blank");
+        else window.open("https://wa.me/?text=" + txt, "_blank");
       });
 
-      // Thank you modal
       function showThankYou(who, vote) {
         modalTitle.textContent = `Thank you, ${who}!`;
         modalMsg.innerHTML = `Your royal prediction is recorded: <strong>${
@@ -793,7 +728,7 @@
         if (e.target === modalWrap) closeModal();
       });
 
-      // Countdown
+      // countdown
       function updateCountdown() {
         const now = new Date();
         const diff = revealDate.getTime() - now.getTime();
@@ -814,32 +749,15 @@
         cdHours.textContent = hours;
         cdMins.textContent = mins;
         cdSecs.textContent = secs;
-
-        if (countdownSmall) {
-          countdownSmall.innerHTML = "";
-          const parts = [
-            { v: days, l: "D" },
-            { v: hours, l: "H" },
-            { v: mins, l: "M" },
-            { v: secs, l: "S" },
-          ];
-          parts.forEach((p) => {
-            const el = document.createElement("div");
-            el.style.cssText =
-              "background:rgba(255,255,255,0.78);border-radius:8px;padding:6px 8px;margin:0 4px;font-weight:700;color:var(--text)";
-            el.innerHTML = `<div style="font-size:14px">${p.v}</div><div style="font-size:11px;color:var(--muted)">${p.l}</div>`;
-            countdownSmall.appendChild(el);
-          });
-        }
       }
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      // Confetti canvas (kept)
+      // confetti
       const canvas = document.getElementById("confetti");
       const ctx = canvas.getContext && canvas.getContext("2d");
-      let confetti = [];
-      let anim = false;
+      let confetti = [],
+        confAnim = false;
       function resizeCanvas() {
         if (!ctx) return;
         canvas.width = canvas.clientWidth;
@@ -864,10 +782,10 @@
             ],
           });
         }
-        if (!anim) animateConfetti();
+        if (!confAnim) animateConfetti();
       }
       function animateConfetti() {
-        anim = true;
+        confAnim = true;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = confetti.length - 1; i >= 0; i--) {
           const p = confetti[i];
@@ -885,54 +803,10 @@
         }
         if (confetti.length) requestAnimationFrame(animateConfetti);
         else {
-          anim = false;
+          confAnim = false;
           ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
       }
-
-      // AUTOPLAY MUSIC — best-effort with fallback button
-      async function tryAutoplay() {
-        if (autoplayAttempted) return;
-        autoplayAttempted = true;
-        try {
-          audio.volume = 0.9;
-          await audio.play();
-          audioPlaying = true;
-          audioToggle.textContent = "🔊 Pause music";
-          enableSoundBtn.style.display = "none";
-        } catch (err) {
-          enableSoundBtn.style.display = "inline-block";
-          audioPlaying = false;
-          audioToggle.textContent = "🔈 Play music";
-        }
-      }
-      window.addEventListener("load", () => {
-        tryAutoplay();
-      });
-
-      audioToggle.addEventListener("click", () => {
-        if (audioPlaying) {
-          audio.pause();
-          audioPlaying = false;
-          audioToggle.textContent = "🔈 Play music";
-        } else {
-          audio.play().catch(() => {
-            enableSoundBtn.style.display = "inline-block";
-          });
-          audioPlaying = true;
-          audioToggle.textContent = "🔊 Pause music";
-        }
-      });
-      enableSoundBtn.addEventListener("click", () => {
-        audio
-          .play()
-          .then(() => {
-            audioPlaying = true;
-            audioToggle.textContent = "🔊 Pause music";
-            enableSoundBtn.style.display = "none";
-          })
-          .catch(() => {});
-      });
 
       // keyboard nav
       choices.forEach((c, i) =>
