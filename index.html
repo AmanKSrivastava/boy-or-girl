@@ -16,16 +16,19 @@
       :root {
         --bg-1: #fffaf4;
         --bg-2: #f3e7c8;
-        --card: rgba(255, 255, 255, 0.86);
+        --card: rgba(255, 255, 255, 0.92);
         --muted: #7d6a50;
         --gold: #d4af37;
         --boy-1: #2f6ff7;
         --boy-2: #89b8ff;
         --girl-1: #ff4da6;
         --girl-2: #ffb0d6;
-        --radius: 18px;
-        --glass-border: rgba(212, 175, 55, 0.14);
-        --accent-shadow: 0 18px 60px rgba(160, 120, 30, 0.12);
+        --radius: 16px;
+        --glass-border: rgba(212, 175, 55, 0.12);
+        --accent-shadow: 0 18px 60px rgba(160, 120, 30, 0.08);
+        --toast-success: #1f7a3a;
+        --toast-error: #9b2b2b;
+        --toast-info: #265a8a;
       }
       * {
         box-sizing: border-box;
@@ -44,16 +47,17 @@
             transparent 8%
           ),
           linear-gradient(180deg, var(--bg-1), var(--bg-2));
-        color: #2b1f14;
+        color: #231a10;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 30px;
+        padding: 18px;
       }
+
       .wrap {
         width: 100%;
-        max-width: 1080px;
-        animation: fadeInUp 0.5s ease both;
+        max-width: 1100px;
+        animation: fadeInUp 0.4s ease both;
       }
       @keyframes fadeInUp {
         from {
@@ -65,70 +69,84 @@
           transform: none;
         }
       }
+
       .card {
         background: var(--card);
-        border-radius: calc(var(--radius) + 8px);
-        padding: 22px;
+        border-radius: calc(var(--radius)+10px);
+        padding: 18px;
         border: 1px solid var(--glass-border);
         box-shadow: var(--accent-shadow);
-        position: relative;
-        overflow: hidden;
+        width: 100%;
+        overflow: visible;
       }
+
+      /* header */
       .header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
+        gap: 12px;
         flex-wrap: wrap;
       }
       .brand {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
       }
       .crest {
-        background: linear-gradient(180deg, #fffaf0, #fff3d6);
         width: 64px;
         height: 64px;
-        border-radius: 14px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 34px;
-        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.08);
+        background: linear-gradient(180deg, #fffaf0, #fff3d6);
         border: 1px solid rgba(212, 175, 55, 0.12);
       }
       .brand-text .title {
         font-family: "Playfair Display", serif;
-        font-size: 22px;
+        font-size: 20px;
         margin: 0;
+        line-height: 1.05;
       }
       .brand-text .subtitle {
         color: var(--muted);
         font-size: 13px;
-        margin-top: 4px;
+        margin-top: 6px;
+        opacity: 0.95;
       }
+
+      /* right controls - countdown + latest supporter */
       .controls-right {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-      }
-      .countdownTop {
         display: flex;
         gap: 10px;
         align-items: center;
+        flex-wrap: wrap;
+      }
+      .countdownTop {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
       }
       .count-pill {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.96);
         padding: 8px 10px;
         border-radius: 10px;
         border: 1px solid rgba(0, 0, 0, 0.04);
+        min-width: 56px;
         text-align: center;
-        min-width: 62px;
       }
       .count-pill .num {
         font-weight: 800;
+        font-size: 15px;
       }
+      .count-pill .label {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
       .latest-supporter {
         background: linear-gradient(
           90deg,
@@ -143,14 +161,15 @@
         display: flex;
         gap: 8px;
         align-items: center;
-        min-width: 260px;
+        min-width: 180px;
         justify-content: center;
       }
 
+      /* teams row */
       .teams-row {
         display: flex;
         gap: 14px;
-        margin-top: 16px;
+        margin-top: 14px;
       }
       .team-card {
         flex: 1;
@@ -160,41 +179,37 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        position: relative;
         background: linear-gradient(
           180deg,
           rgba(255, 255, 255, 0.98),
           rgba(255, 255, 255, 0.95)
         );
         border: 1px solid rgba(0, 0, 0, 0.04);
-        transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-          box-shadow 0.28s ease, border-color 0.28s ease;
+        transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
       }
       .team-card.leader {
         transform: translateY(-8px);
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
         border: 2px solid var(--gold);
       }
       .team-name {
         font-weight: 900;
         font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
       }
       .team-score {
         font-family: "Playfair Display", serif;
-        font-size: 36px;
+        font-size: 34px;
         color: var(--gold);
-        margin-top: 6px;
+        margin-top: 8px;
       }
+
       .progress-wrap {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 8px;
       }
       .progress-bg {
         background: rgba(0, 0, 0, 0.06);
-        height: 14px;
+        height: 12px;
         border-radius: 999px;
         overflow: hidden;
       }
@@ -202,13 +217,7 @@
         height: 100%;
         width: 0%;
         border-radius: 999px;
-        transition: width 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
-        box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.06);
-      }
-      .percent {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 8px;
+        transition: width 0.8s;
       }
       .team-boy .progress-fill {
         background: linear-gradient(90deg, var(--boy-1), var(--boy-2));
@@ -216,32 +225,47 @@
       .team-girl .progress-fill {
         background: linear-gradient(90deg, var(--girl-1), var(--girl-2));
       }
+      .percent {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
 
+      /* grid */
       .grid {
         display: grid;
         grid-template-columns: 1fr 380px;
-        gap: 20px;
+        gap: 18px;
         margin-top: 18px;
       }
-      @media (max-width: 920px) {
+      @media (max-width: 980px) {
         .grid {
           grid-template-columns: 1fr;
         }
-        .teams-row {
-          flex-direction: column;
+      }
+      @media (max-width: 680px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .brand-text .title {
+          font-size: 18px;
+        }
+        .brand-text .subtitle {
+          font-size: 12px;
         }
       }
 
+      /* choices */
       .choices {
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
       }
       .choice {
         display: flex;
         align-items: center;
-        gap: 16px;
-        padding: 16px;
+        gap: 14px;
+        padding: 14px;
         border-radius: 12px;
         border: 1px solid rgba(0, 0, 0, 0.04);
         background: linear-gradient(
@@ -250,41 +274,38 @@
           rgba(255, 255, 255, 0.96)
         );
         cursor: pointer;
-        transition: transform 0.18s ease, box-shadow 0.18s ease,
-          border-color 0.18s ease;
         position: relative;
-        overflow: visible;
+        transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
       }
       .choice:hover {
         transform: translateY(-6px);
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
       }
       .choice .emoji {
         font-size: 40px;
         width: 64px;
-        text-align: center;
-        border-radius: 10px;
+        height: 56px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 10px;
       }
-      .choice .meta .titleSmall {
+      .choice .titleSmall {
         font-family: "Playfair Display", serif;
         font-weight: 800;
         font-size: 18px;
       }
-      .choice .meta .desc {
+      .choice .desc {
         color: var(--muted);
         font-size: 13px;
         margin-top: 4px;
       }
-
       .choice.selected {
         transform: translateY(-14px);
         box-shadow: 0 36px 90px rgba(0, 0, 0, 0.12);
         border-color: rgba(212, 175, 55, 0.22);
-        animation: choicePulse 0.7s ease;
         z-index: 2;
+        animation: choicePulse 0.68s;
       }
       @keyframes choicePulse {
         0% {
@@ -326,23 +347,20 @@
         content: "✔";
       }
 
+      /* panel */
       .panel {
         background: linear-gradient(
           180deg,
           rgba(255, 255, 255, 0.98),
           rgba(255, 255, 255, 0.96)
         );
-        padding: 16px;
+        padding: 14px;
         border-radius: 12px;
         border: 1px solid rgba(0, 0, 0, 0.04);
       }
       .panel h3 {
         font-family: "Playfair Display", serif;
         margin: 0 0 6px;
-      }
-      .panel .muted {
-        color: var(--muted);
-        font-size: 13px;
       }
       .inputs {
         display: flex;
@@ -351,17 +369,17 @@
         margin-top: 10px;
       }
       .inputs input {
-        padding: 11px;
+        padding: 10px;
         border-radius: 10px;
         border: 1px solid rgba(212, 175, 55, 0.1);
         background: transparent;
-        transition: box-shadow 0.18s ease, transform 0.12s ease;
       }
       .inputs input:focus {
         outline: none;
-        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.08);
-        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.06);
+        transform: translateY(-1px);
       }
+
       .cta {
         display: flex;
         gap: 10px;
@@ -375,17 +393,13 @@
         border-radius: 10px;
         font-weight: 900;
         cursor: pointer;
-        transition: transform 0.12s ease, box-shadow 0.12s ease;
         box-shadow: 0 10px 30px rgba(212, 175, 55, 0.08);
       }
       .btnMain:disabled {
-        opacity: 0.5;
+        opacity: 0.55;
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
-      }
-      .btnMain:hover:not(:disabled) {
-        transform: translateY(-4px);
       }
       .btnGhost {
         background: transparent;
@@ -403,6 +417,7 @@
         font-size: 13px;
       }
 
+      /* modal */
       .modalWrap {
         position: fixed;
         left: 0;
@@ -431,8 +446,7 @@
         font-family: "Playfair Display", serif;
         color: #2b1f14;
       }
-      .modal .msg-shimmer {
-        display: block;
+      .msg-shimmer {
         position: absolute;
         left: -8%;
         top: -14%;
@@ -442,19 +456,16 @@
           ellipse at center,
           rgba(212, 175, 55, 0.18) 0%,
           rgba(212, 175, 55, 0.06) 40%,
-          rgba(0, 0, 0, 0) 60%
+          transparent 60%
         );
-        filter: blur(8px);
+        filter: blur(7px);
         transform: rotate(-4deg);
         pointer-events: none;
-        z-index: 1;
         border-radius: 12px;
       }
-      .modal .modal-content-inner {
-        position: relative;
-        z-index: 3;
-      }
-      .modal .sparkles {
+
+      /* sparkles */
+      .sparkles {
         position: absolute;
         left: 0;
         top: 0;
@@ -464,7 +475,7 @@
         overflow: visible;
         z-index: 2;
       }
-      .modal .sparkles .spark {
+      .sparkles .spark {
         position: absolute;
         width: 9px;
         height: 9px;
@@ -476,7 +487,7 @@
         transform: scale(0.2) translateY(0);
         animation: sparkle-pop 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
       }
-      .modal .sparkles .spark.pink {
+      .sparkles .spark.pink {
         background: linear-gradient(180deg, #fff0f8, #ffbed8);
         box-shadow: 0 0 8px rgba(255, 156, 178, 0.9),
           0 0 18px rgba(255, 156, 178, 0.28);
@@ -499,13 +510,8 @@
           transform: scale(0.6) translateY(-20px);
         }
       }
-      .modal .modal-actions {
-        margin-top: 12px;
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-      }
 
+      /* confetti canvas */
       #confetti {
         position: fixed;
         left: 0;
@@ -515,23 +521,123 @@
         pointer-events: none;
         z-index: 1000;
       }
+
+      /* toaster */
+      .toast-container {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 2000;
+        align-items: center;
+      }
+      .toast {
+        min-width: 220px;
+        max-width: 92vw;
+        padding: 10px 14px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+        opacity: 0;
+        transform: translateY(8px);
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .toast.show {
+        animation: toastIn 0.28s forwards;
+      }
+      @keyframes toastIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .toast.success {
+        background: linear-gradient(90deg, var(--toast-success), #2aa05a);
+      }
+      .toast.error {
+        background: linear-gradient(90deg, var(--toast-error), #c03838);
+      }
+      .toast.info {
+        background: linear-gradient(90deg, var(--toast-info), #2a74a8);
+      }
+
+      /* mobile tweaks to ensure countdown & title visible */
       @media (max-width: 560px) {
         .brand-text .title {
-          font-size: 18px;
+          font-size: 17px;
         }
-        .team-score {
-          font-size: 28px;
+        .brand-text .subtitle {
+          font-size: 12px;
         }
-        .choice .emoji {
-          font-size: 34px;
-          width: 52px;
+        .count-pill {
+          min-width: 48px;
+          padding: 6px 8px;
+        }
+        .countdownTop {
+          width: 100%;
+          justify-content: flex-start;
+        }
+        .controls-right {
+          width: 100%;
+          justify-content: space-between;
         }
         .latest-supporter {
-          min-width: 160px;
+          min-width: 120px;
+          padding: 6px 8px;
+          font-size: 12px;
+        }
+        .team-score {
+          font-size: 26px;
+        }
+        .choice .emoji {
+          width: 52px;
+          font-size: 34px;
+        }
+      }
+      /* Ensure card is top-aligned on small screens so header never gets clipped */
+      @media (max-width: 768px) {
+        html,
+        body {
+          height: 100%;
+        }
+        body {
+          /* stop vertical centering on mobile so top of card is visible */
+          align-items: flex-start !important;
+          justify-content: flex-start !important;
+          padding-top: max(
+            18px,
+            env(safe-area-inset-top)
+          ); /* respect notch / status bar */
+          padding-left: 12px;
+          padding-right: 12px;
+          padding-bottom: 24px;
+        }
+
+        /* small spacing so card doesn't touch the top exactly */
+        .wrap {
+          margin-top: 6px;
+        }
+
+        /* Make sure header stacks and remains centered */
+        .header {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .brand {
+          flex-direction: column;
+          align-items: center;
         }
       }
     </style>
   </head>
+
   <body>
     <div class="wrap">
       <div class="card" id="card">
@@ -541,38 +647,38 @@
             <div class="brand-text">
               <div class="title">Welcome Little One — Cast Your Vote</div>
               <div class="subtitle">
-                Aman &amp; Akanksha — Pick a side and bless the little one
+                Aman & Akanksha — Pick a side and bless the little one
               </div>
             </div>
           </div>
 
           <div class="controls-right">
-            <div class="countdownTop" aria-hidden="false">
+            <div class="countdownTop" id="countdownTop" aria-hidden="false">
               <div
                 style="
                   font-weight: 800;
                   color: var(--muted);
                   font-size: 13px;
-                  margin-right: 8px;
+                  margin-right: 6px;
                 "
               >
                 Reveal in
               </div>
               <div class="count-pill">
                 <div class="num" id="cdDays">0</div>
-                <div style="font-size: 11px; color: var(--muted)">Days</div>
+                <div class="label">Days</div>
               </div>
               <div class="count-pill">
                 <div class="num" id="cdHours">0</div>
-                <div style="font-size: 11px; color: var(--muted)">Hours</div>
+                <div class="label">Hours</div>
               </div>
               <div class="count-pill">
                 <div class="num" id="cdMins">0</div>
-                <div style="font-size: 11px; color: var(--muted)">Mins</div>
+                <div class="label">Mins</div>
               </div>
               <div class="count-pill">
                 <div class="num" id="cdSecs">0</div>
-                <div style="font-size: 11px; color: var(--muted)">Secs</div>
+                <div class="label">Secs</div>
               </div>
             </div>
 
@@ -587,13 +693,11 @@
           </div>
         </div>
 
-        <div class="teams-row" style="margin-top: 16px">
+        <div class="teams-row" style="margin-top: 14px">
           <div id="teamBoyCard" class="team-card team-boy">
-            <div class="team-name">
-              <span class="team-name-badge">Baby Boy Gang</span>
-            </div>
+            <div class="team-name">Baby Boy Gang</div>
             <div class="team-score" id="boyCount">0</div>
-            <div class="progress-wrap" style="width: 100%; margin-top: 10px">
+            <div class="progress-wrap">
               <div class="progress-bg">
                 <div id="boyFill" class="progress-fill" style="width: 0%"></div>
               </div>
@@ -602,11 +706,9 @@
           </div>
 
           <div id="teamGirlCard" class="team-card team-girl">
-            <div class="team-name">
-              <span class="team-name-badge">Baby Girl Gang</span>
-            </div>
+            <div class="team-name">Baby Girl Gang</div>
             <div class="team-score" id="girlCount">0</div>
-            <div class="progress-wrap" style="width: 100%; margin-top: 10px">
+            <div class="progress-wrap">
               <div class="progress-bg">
                 <div
                   id="girlFill"
@@ -619,7 +721,7 @@
           </div>
         </div>
 
-        <div class="grid">
+        <div class="grid" style="margin-top: 18px">
           <div class="choices" aria-hidden="false">
             <div
               class="choice"
@@ -633,10 +735,9 @@
                 class="emoji"
                 style="
                   background: linear-gradient(180deg, var(--boy-2), #d7e9ff);
-                  border: 1px solid rgba(0, 0, 0, 0.04);
                 "
               >
-                🤴
+                <span>🤴</span>
               </div>
               <div class="meta">
                 <div class="titleSmall">Baby Boy Gang</div>
@@ -656,10 +757,9 @@
                 class="emoji"
                 style="
                   background: linear-gradient(180deg, var(--girl-2), #fff0f4);
-                  border: 1px solid rgba(0, 0, 0, 0.04);
                 "
               >
-                👸
+                <span>👸</span>
               </div>
               <div class="meta">
                 <div class="titleSmall">Baby Girl Gang</div>
@@ -682,8 +782,7 @@
               />
             </div>
 
-            <div class="cta">
-              <!-- button is now enabled when relation + authReady, even if selection missing -->
+            <div class="cta" style="margin-top: 12px">
               <button class="btnMain" id="voteBtn" disabled>
                 Submit Your Prediction
               </button>
@@ -704,11 +803,12 @@
             font-size: 13px;
           "
         >
-          With love, Aman &amp; Akanksha
+          With love, Aman & Akanksha
         </footer>
       </div>
     </div>
 
+    <!-- modal -->
     <div
       class="modalWrap"
       id="modalWrap"
@@ -733,7 +833,16 @@
       </div>
     </div>
 
+    <!-- confetti -->
     <canvas id="confetti"></canvas>
+
+    <!-- toaster container -->
+    <div
+      class="toast-container"
+      id="toastContainer"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
 
     <script type="module">
       // ---------- CONFIG ----------
@@ -753,24 +862,24 @@
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
+      // Firebase config (regional DB root)
       const firebaseConfig = {
         apiKey: "AIzaSyDJMam9PYVpprTjX-hSx4zqoqkp5AOEQaA",
         authDomain: "baby-prediction-2947c.firebaseapp.com",
         databaseURL:
           "https://baby-prediction-2947c-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "baby-prediction-2947c",
-        storageBucket: "baby-prediction-2947c.firebasedestorage.app",
+        storageBucket: "baby-prediction-2947c.firebasestorage.app",
         messagingSenderId: "746431850655",
         appId: "1:746431850655:web:2d3d4cddf4e7fa6e855aaa",
         measurementId: "G-Y4LQT2ZRD5",
       };
 
-      // ---------- INIT ----------
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
       const auth = getAuth(app);
 
-      // ---------- UI REFS ----------
+      // UI refs
       const choices = Array.from(document.querySelectorAll(".choice"));
       const boyCountEl = document.getElementById("boyCount");
       const girlCountEl = document.getElementById("girlCount");
@@ -797,28 +906,83 @@
       const cdMins = document.getElementById("cdMins");
       const cdSecs = document.getElementById("cdSecs");
 
+      const toastContainer = document.getElementById("toastContainer");
+
       const revealDate = new Date("2025-11-14T00:00:00");
 
       let myUid = null;
       let selectedValue = null;
       let authReady = false;
-
-      // store previous counts for animation
       let prevCounts = { boy: 0, girl: 0 };
 
-      // ---------- helpers ----------
-      function updateVoteButtonState() {
-        // CHANGE: only require relation + authReady to enable the button.
-        // Do NOT require selection — user can click and will get alerted if selection missing.
-        const relFilled = (relInput.value || "").trim().length > 0;
-        voteBtn.disabled = !(relFilled && authReady);
-        voteBtn.style.opacity = voteBtn.disabled ? 0.5 : 1;
+      // ---------- TOASTER ----------
+      function showToast(message, type = "info", timeout = 4000) {
+        const id = "t_" + Math.random().toString(36).slice(2, 9);
+        const div = document.createElement("div");
+        div.className =
+          "toast show " +
+          (type === "success"
+            ? "success"
+            : type === "error"
+            ? "error"
+            : "info");
+        div.id = id;
+        div.setAttribute("role", "status");
+        div.setAttribute("aria-live", "polite");
+        div.innerHTML = `<span style="opacity:0.95; margin-right:8px;">${
+          type === "success" ? "🎉" : type === "error" ? "⚠️" : "ℹ️"
+        }</span><div style="flex:1">${message}</div>`;
+        toastContainer.appendChild(div);
+        setTimeout(() => {
+          div.classList.remove("show");
+          try {
+            div.style.opacity = "0";
+          } catch {}
+        }, timeout);
+        // remove after animation
+        setTimeout(() => {
+          if (div && div.parentNode) div.parentNode.removeChild(div);
+        }, timeout + 450);
       }
 
-      // animated number (integer)
+      // Handy replacements for previous alert usage
+      function notifyMissingSelection() {
+        showToast(
+          "Please pick Baby Boy Gang or Baby Girl Gang before submitting.",
+          "info",
+          3500
+        );
+      }
+      function notifyMissingRelation() {
+        showToast(
+          "Relation is required — please enter it so we can say thank you properly.",
+          "info",
+          3500
+        );
+      }
+      function notifyAuthPending() {
+        showToast(
+          "Still signing in — give us a second and try again.",
+          "info",
+          3000
+        );
+      }
+      function notifySaveError() {
+        showToast(
+          "Could not save vote. Please check your connection or try again later.",
+          "error",
+          4500
+        );
+      }
+      function notifySaved() {
+        showToast("Your prediction is saved — thank you!", "success", 3000);
+      }
+
+      // ---------- helpers ----------
       function animateNumber(el, from, to, duration = 700) {
         from = Number(from) || 0;
         to = Number(to) || 0;
+        if (!el) return;
         if (from === to) {
           el.textContent = String(to);
           return;
@@ -826,7 +990,6 @@
         const start = performance.now();
         const step = (now) => {
           const t = Math.min(1, (now - start) / duration);
-          // easeOutQuad
           const ease = 1 - (1 - t) * (1 - t);
           const cur = Math.round(from + (to - from) * ease);
           el.textContent = String(cur);
@@ -835,21 +998,19 @@
         requestAnimationFrame(step);
       }
 
-      // pretty time-ago helper
       function timeAgo(isoString) {
         if (!isoString) return "";
         const then = new Date(isoString).getTime();
         if (isNaN(then)) return "";
         const now = Date.now();
-        const diff = Math.floor((now - then) / 1000); // seconds
+        const diff = Math.floor((now - then) / 1000);
         if (diff < 6) return "just now";
         if (diff < 60) return diff + "s ago";
         if (diff < 3600) return Math.floor(diff / 60) + "m ago";
         if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
-        if (diff < 60 * 60 * 24 * 30) return Math.floor(diff / 86400) + "d ago";
-        if (diff < 60 * 60 * 24 * 365)
-          return Math.floor(diff / (86400 * 30)) + "mo ago";
-        return Math.floor(diff / (86400 * 365)) + "y ago";
+        if (diff < 2592000) return Math.floor(diff / 86400) + "d ago";
+        if (diff < 31536000) return Math.floor(diff / 2592000) + "mo ago";
+        return Math.floor(diff / 31536000) + "y ago";
       }
       function formatExactLocal(isoString) {
         if (!isoString) return "";
@@ -875,6 +1036,11 @@
           console.log("Anonymous sign-in requested");
         } catch (e) {
           console.error("startAuth error", e);
+          showToast(
+            "Could not sign in anonymously. Check Firebase config.",
+            "error",
+            5000
+          );
         }
       }
       startAuth();
@@ -883,7 +1049,6 @@
       function attachRealtimeListener() {
         if (window._votesListenerAttached) return;
         window._votesListenerAttached = true;
-
         const votesRef = ref(db, "votes");
         onValue(
           votesRef,
@@ -897,11 +1062,9 @@
               if (v === "girl") girl++;
             }
 
-            // Animate counts from previous -> new
             animateNumber(boyCountEl, prevCounts.boy, boy);
             animateNumber(girlCountEl, prevCounts.girl, girl);
 
-            // percentages
             const total = boy + girl || 0;
             let boyP = 0,
               girlP = 0;
@@ -909,10 +1072,9 @@
               boyP = Math.round((boy / total) * 100);
               girlP = 100 - boyP;
             }
-            // animate progress fills (CSS transition already handles smooth width change)
-            boyFill.style.width = boyP + "%";
-            girlFill.style.width = girlP + "%";
-            // animate percent text numbers
+
+            if (boyFill) boyFill.style.width = boyP + "%";
+            if (girlFill) girlFill.style.width = girlP + "%";
             animateNumber(
               boyPercent,
               parseInt(boyPercent.textContent || 0),
@@ -924,11 +1086,9 @@
               girlP
             );
 
-            // leader UI
             teamBoyCard.classList.toggle("leader", boy > girl);
             teamGirlCard.classList.toggle("leader", girl > boy);
 
-            // reflect my vote visually
             if (myUid && data[myUid]) {
               selectedValue = data[myUid].vote;
               choices.forEach((c) =>
@@ -937,15 +1097,18 @@
                   c.dataset.value === selectedValue
                 )
               );
-              // note: updateVoteButtonState does NOT disable based on selection anymore
             }
 
-            // save prev for next animation
             prevCounts.boy = boy;
             prevCounts.girl = girl;
           },
           (err) => {
             console.error("Realtime listener error (votes):", err);
+            showToast(
+              "Realtime listener error — check database rules.",
+              "error",
+              4000
+            );
           }
         );
 
@@ -961,7 +1124,7 @@
             }
             const nm = (val.name || "").trim();
             const rel = (val.relation || "").trim();
-            let displayName =
+            const displayName =
               nm && rel ? `${nm} (${rel})` : nm || rel || "Friend";
             const heart =
               val.vote === "boy" ? "💙" : val.vote === "girl" ? "💖" : "❤️";
@@ -969,7 +1132,7 @@
               val.vote === "boy" ? "Baby Boy Gang" : "Baby Girl Gang";
             const prettyAgo = timeAgo(val.time);
             const exact = formatExactLocal(val.time);
-            latestSupporterEl.textContent = `${displayName} — ${gang} ${heart}${
+            latestSupporterEl.textContent = `Last Vote: ${displayName} — ${gang} ${heart}${
               prettyAgo ? " · " + prettyAgo : ""
             }`;
             latestSupporterEl.title = `${displayName} — ${gang} (${exact})`;
@@ -1051,8 +1214,8 @@
         }
       }
 
-      // ---------- sparkles ----------
-      function createSparkles(count = 10, duration = 900) {
+      // sparkles inside modal
+      function createSparkles(count = 8, duration = 900) {
         let container = modalWrap.querySelector(".sparkles");
         if (!container) {
           container = document.createElement("div");
@@ -1081,9 +1244,9 @@
         }, duration + 700);
       }
 
-      // ---------- modal ----------
-      function openModalContent(htmlTitle, htmlMessage) {
-        modalTitle.textContent = htmlTitle;
+      // modal helpers
+      function openModalContent(titleText, htmlMessage) {
+        modalTitle.textContent = titleText;
         modalMsg.innerHTML = htmlMessage;
         modalWrap.setAttribute("aria-hidden", "false");
         modalWrap.style.display = "flex";
@@ -1095,17 +1258,9 @@
         modalWrap.setAttribute("aria-hidden", "true");
       }
 
-      // ---------- show thank you ----------
-      function showThankYou(nameOrWho, vote) {
-        const nm = (nameInput?.value || "").trim();
-        const rel = (relInput?.value || "").trim();
-        let displayName = "Friend";
-        if (nm && rel) displayName = `${nm} (${rel})`;
-        else if (nm) displayName = nm;
-        else if (rel) displayName = rel;
-
+      function showThankYou(voterDisplayName, vote) {
         const heart = vote === "boy" ? "💙" : "💖";
-        const sweetLines = [
+        const lines = [
           "Your blessings mean the world to us — thank you for being part of our joy!",
           "Your good wishes wrap this little one in love already.",
           "We can feel the love — thank you for celebrating with us!",
@@ -1117,21 +1272,26 @@
           vote === "boy"
             ? "You believe a little <strong>Prince 🤴</strong> is on his way — may his laughter fill our home with joy!"
             : "You believe a little <strong>Princess 👸</strong> is coming — may her smile bring endless sunshine!";
-        const randomLine =
-          sweetLines[Math.floor(Math.random() * sweetLines.length)];
-
-        const titleText = `Thank you, ${displayName} ${heart}`;
+        const randomLine = lines[Math.floor(Math.random() * lines.length)];
+        const titleText = `Thank you, ${voterDisplayName} ${heart}`;
         const html = `<span class="msg-shimmer" aria-hidden="true"></span><div class="modal-content-inner"><div style="margin-bottom:8px;font-weight:600;color:#2b1f14">${randomLine}</div><div style="font-size:14px;color:#5b4b3a">${voteLine}</div><div style="margin-top:10px;font-size:13px;color:var(--muted)">Click <strong>Close</strong> when you're ready.</div></div>`;
         openModalContent(titleText, html);
         createSparkles(12, 950);
         launchConfetti();
       }
 
-      // ---------- submit vote ----------
+      // vote button enabling logic: only require relation + authReady
+      function updateVoteButtonState() {
+        const relFilled = (relInput.value || "").trim().length > 0;
+        voteBtn.disabled = !(relFilled && authReady);
+        voteBtn.style.opacity = voteBtn.disabled ? 0.55 : 1;
+      }
+
+      // submit vote
       function setVoteButtonState(isWorking) {
         if (!voteBtn) return;
         voteBtn.disabled = !!isWorking;
-        voteBtn.style.opacity = isWorking ? 0.5 : 1;
+        voteBtn.style.opacity = isWorking ? 0.55 : 1;
         voteBtn.textContent = isWorking
           ? "Submitting..."
           : "Submit Your Prediction";
@@ -1139,7 +1299,7 @@
 
       async function submitVote(voteValue) {
         if (!authReady || !myUid) {
-          alert("Still signing in. Please wait a moment and try again.");
+          notifyAuthPending();
           return;
         }
         setVoteButtonState(true);
@@ -1165,13 +1325,15 @@
             ref(db, `lastVote`),
             Object.assign({ uid: myUid }, payload)
           );
-          console.log("Vote written to Firebase", payload);
+          notifySaved();
         } catch (e) {
           console.error("Firebase write failed", e);
-          alert("Could not save vote. Please check your connection.");
+          notifySaveError();
           setVoteButtonState(false);
           return;
         }
+
+        // Formspree (fire-and-forget)
         try {
           const body = {
             event: "vote",
@@ -1191,16 +1353,17 @@
         } catch (e) {
           console.warn("Formspree error", e);
         }
+
         setVoteButtonState(false);
       }
 
-      // ---------- UI handlers ----------
+      // UI handlers
       choices.forEach((c, i) => {
         c.addEventListener("click", () => {
           choices.forEach((x) => x.classList.remove("selected"));
           c.classList.add("selected");
           selectedValue = c.dataset.value;
-          updateVoteButtonState(); // still update (button remains enabled if relation+auth)
+          updateVoteButtonState();
         });
         c.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
@@ -1214,20 +1377,15 @@
         });
       });
 
-      // update button state when relation changes (button enabled based on relation + authReady)
       relInput.addEventListener("input", () => updateVoteButtonState());
-      nameInput.addEventListener("input", () => {});
 
       voteBtn.addEventListener("click", async () => {
-        // NOW: button may be enabled even without selection; show alert if selection missing
         if (!selectedValue) {
-          alert(
-            "Please select Baby Boy Gang or Baby Girl Gang before submitting."
-          );
+          notifyMissingSelection();
           return;
         }
         if (!(relInput.value || "").trim()) {
-          alert("Please enter your relation (required).");
+          notifyMissingRelation();
           relInput.focus();
           return;
         }
@@ -1262,6 +1420,7 @@
         if (e.target === modalWrap) closeModalSafe();
       });
 
+      // countdown (keeps visible on mobile; pills stack/scale via CSS)
       function updateCountdown() {
         const now = new Date();
         const diff = revealDate.getTime() - now.getTime();
@@ -1286,6 +1445,7 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
+      // initial console note
       console.log(
         "Page initialized — waiting for Firebase auth & realtime updates."
       );
