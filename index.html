@@ -67,7 +67,7 @@
       }
       .card {
         background: var(--card);
-        border-radius: calc(var(--radius)+8px);
+        border-radius: calc(var(--radius) + 8px);
         padding: 22px;
         border: 1px solid var(--glass-border);
         box-shadow: var(--accent-shadow);
@@ -683,6 +683,7 @@
             </div>
 
             <div class="cta">
+              <!-- button is now enabled when relation + authReady, even if selection missing -->
               <button class="btnMain" id="voteBtn" disabled>
                 Submit Your Prediction
               </button>
@@ -758,7 +759,7 @@
         databaseURL:
           "https://baby-prediction-2947c-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "baby-prediction-2947c",
-        storageBucket: "baby-prediction-2947c.firebasestorage.app",
+        storageBucket: "baby-prediction-2947c.firebasedestorage.app",
         messagingSenderId: "746431850655",
         appId: "1:746431850655:web:2d3d4cddf4e7fa6e855aaa",
         measurementId: "G-Y4LQT2ZRD5",
@@ -802,12 +803,36 @@
       let selectedValue = null;
       let authReady = false;
 
+      // store previous counts for animation
+      let prevCounts = { boy: 0, girl: 0 };
+
       // ---------- helpers ----------
       function updateVoteButtonState() {
+        // CHANGE: only require relation + authReady to enable the button.
+        // Do NOT require selection — user can click and will get alerted if selection missing.
         const relFilled = (relInput.value || "").trim().length > 0;
-        const selectionMade = !!selectedValue;
-        voteBtn.disabled = !(relFilled && selectionMade && authReady);
+        voteBtn.disabled = !(relFilled && authReady);
         voteBtn.style.opacity = voteBtn.disabled ? 0.5 : 1;
+      }
+
+      // animated number (integer)
+      function animateNumber(el, from, to, duration = 700) {
+        from = Number(from) || 0;
+        to = Number(to) || 0;
+        if (from === to) {
+          el.textContent = String(to);
+          return;
+        }
+        const start = performance.now();
+        const step = (now) => {
+          const t = Math.min(1, (now - start) / duration);
+          // easeOutQuad
+          const ease = 1 - (1 - t) * (1 - t);
+          const cur = Math.round(from + (to - from) * ease);
+          el.textContent = String(cur);
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
       }
 
       // pretty time-ago helper
@@ -822,7 +847,6 @@
         if (diff < 3600) return Math.floor(diff / 60) + "m ago";
         if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
         if (diff < 60 * 60 * 24 * 30) return Math.floor(diff / 86400) + "d ago";
-        // else show months/years
         if (diff < 60 * 60 * 24 * 365)
           return Math.floor(diff / (86400 * 30)) + "mo ago";
         return Math.floor(diff / (86400 * 365)) + "y ago";
@@ -830,7 +854,6 @@
       function formatExactLocal(isoString) {
         if (!isoString) return "";
         const d = new Date(isoString);
-        // use Asia/Kolkata display (your project timezone)
         try {
           return d.toLocaleString("en-IN", {
             timeZone: "Asia/Kolkata",
@@ -874,9 +897,9 @@
               if (v === "girl") girl++;
             }
 
-            // update counts
-            boyCountEl.textContent = boy;
-            girlCountEl.textContent = girl;
+            // Animate counts from previous -> new
+            animateNumber(boyCountEl, prevCounts.boy, boy);
+            animateNumber(girlCountEl, prevCounts.girl, girl);
 
             // percentages
             const total = boy + girl || 0;
@@ -886,10 +909,20 @@
               boyP = Math.round((boy / total) * 100);
               girlP = 100 - boyP;
             }
+            // animate progress fills (CSS transition already handles smooth width change)
             boyFill.style.width = boyP + "%";
             girlFill.style.width = girlP + "%";
-            boyPercent.textContent = boyP + "%";
-            girlPercent.textContent = girlP + "%";
+            // animate percent text numbers
+            animateNumber(
+              boyPercent,
+              parseInt(boyPercent.textContent || 0),
+              boyP
+            );
+            animateNumber(
+              girlPercent,
+              parseInt(girlPercent.textContent || 0),
+              girlP
+            );
 
             // leader UI
             teamBoyCard.classList.toggle("leader", boy > girl);
@@ -904,8 +937,12 @@
                   c.dataset.value === selectedValue
                 )
               );
-              updateVoteButtonState();
+              // note: updateVoteButtonState does NOT disable based on selection anymore
             }
+
+            // save prev for next animation
+            prevCounts.boy = boy;
+            prevCounts.girl = girl;
           },
           (err) => {
             console.error("Realtime listener error (votes):", err);
@@ -954,6 +991,7 @@
           myUid = null;
           authReady = false;
           startAuth();
+          updateVoteButtonState();
         }
       });
 
@@ -1162,7 +1200,7 @@
           choices.forEach((x) => x.classList.remove("selected"));
           c.classList.add("selected");
           selectedValue = c.dataset.value;
-          updateVoteButtonState();
+          updateVoteButtonState(); // still update (button remains enabled if relation+auth)
         });
         c.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
@@ -1176,12 +1214,16 @@
         });
       });
 
+      // update button state when relation changes (button enabled based on relation + authReady)
       relInput.addEventListener("input", () => updateVoteButtonState());
       nameInput.addEventListener("input", () => {});
 
       voteBtn.addEventListener("click", async () => {
+        // NOW: button may be enabled even without selection; show alert if selection missing
         if (!selectedValue) {
-          alert("Please select Baby Boy Gang or Baby Girl Gang.");
+          alert(
+            "Please select Baby Boy Gang or Baby Girl Gang before submitting."
+          );
           return;
         }
         if (!(relInput.value || "").trim()) {
