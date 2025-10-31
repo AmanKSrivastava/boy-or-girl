@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Royal Baby Reveal — Boy or Girl</title>
+    <title>Baby Reveal — Boy or Girl</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
@@ -39,7 +39,6 @@
         justify-content: center;
         padding: 28px;
       }
-
       .wrap {
         width: 100%;
         max-width: 960px;
@@ -142,7 +141,7 @@
         margin-top: 4px;
       }
 
-      /* single authoritative counters (top) */
+      /* teams */
       .teams {
         display: flex;
         gap: 18px;
@@ -177,7 +176,6 @@
         font-size: 18px;
       }
 
-      /* main layout */
       .grid {
         display: grid;
         grid-template-columns: 1fr 380px;
@@ -331,6 +329,7 @@
         font-size: 13px;
       }
 
+      /* modal + sparkles */
       .modalWrap {
         position: fixed;
         left: 0;
@@ -351,6 +350,8 @@
         width: 92%;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
         text-align: center;
+        position: relative;
+        overflow: visible;
       }
       .modal h2 {
         margin: 0 0 8px;
@@ -360,6 +361,74 @@
       .modal p {
         color: #5b4b3a;
         margin: 8px 0 12px;
+      }
+      .modal .sparkles {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 2;
+      }
+      .modal .sparkles .spark {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #fff9da, #ffd37a);
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.9),
+          0 0 18px rgba(212, 175, 55, 0.35);
+        opacity: 0;
+        transform: scale(0.2) translateY(0);
+        animation: sparkle-pop 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+      }
+      .modal .sparkles .spark.pink {
+        background: linear-gradient(180deg, #fff0f8, #ffbed8);
+        box-shadow: 0 0 8px rgba(255, 156, 178, 0.9),
+          0 0 18px rgba(255, 156, 178, 0.28);
+      }
+      @keyframes sparkle-pop {
+        0% {
+          opacity: 0;
+          transform: scale(0.2) translateY(6px);
+        }
+        20% {
+          opacity: 1;
+          transform: scale(1.05) translateY(-2px);
+        }
+        60% {
+          opacity: 1;
+          transform: scale(0.9) translateY(-8px);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.6) translateY(-20px);
+        }
+      }
+      .modal .msg-shimmer {
+        display: block;
+        position: absolute;
+        left: -8%;
+        top: -14%;
+        width: 120%;
+        height: 40%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(212, 175, 55, 0.18) 0%,
+          rgba(212, 175, 55, 0.06) 40%,
+          rgba(0, 0, 0, 0) 60%
+        );
+        filter: blur(6px);
+        transform: rotate(-4deg);
+        pointer-events: none;
+        z-index: 1;
+        border-radius: 12px;
+      }
+      .modal .modal-content-inner {
+        position: relative;
+        z-index: 3;
       }
 
       #confetti {
@@ -393,13 +462,12 @@
 
         <div class="header">
           <div class="crest">👑</div>
-          <div class="title">Royal Baby Reveal</div>
+          <div class="title">Baby Reveal</div>
           <p class="sub">
             Aman & Akanksha invite you — predict whether it will be a prince or
             princess
           </p>
 
-          <!-- single countdown moved here -->
           <div class="headerCount" aria-hidden="false">
             <div class="countCard">
               <div id="cdDays">0</div>
@@ -420,8 +488,7 @@
           </div>
         </div>
 
-        <!-- ONLY authoritative counts (top) -->
-        <div class="teams" aria-hidden="false">
+        <div class="teams">
           <div class="team-pill">
             <span class="label">Boy Votes</span
             ><span class="count" id="boyCount">0</span>
@@ -433,7 +500,7 @@
         </div>
 
         <div class="grid">
-          <div class="choices" aria-hidden="false">
+          <div class="choices">
             <div
               class="choice"
               id="boy"
@@ -465,7 +532,7 @@
             </div>
           </div>
 
-          <div class="panel" aria-hidden="false">
+          <div class="panel">
             <h3>Make your prediction</h3>
             <div class="muted">
               Reveal Date: <strong>14 November 2025</strong>
@@ -492,10 +559,7 @@
           </div>
         </div>
 
-        <footer>
-          Made with love for Aman & Akanksha — votes saved to Firebase and
-          Formspree.
-        </footer>
+        <footer>With love, Aman & Akanksha</footer>
       </div>
     </div>
 
@@ -507,15 +571,23 @@
       aria-modal="true"
       aria-hidden="true"
     >
-      <div class="modal" role="document">
+      <div
+        class="modal"
+        role="document"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalMsg"
+      >
         <h2 id="modalTitle">Thank you!</h2>
-        <p id="modalMsg">We appreciate your prediction.</p>
+        <div id="modalMsg" class="modal-content">
+          <p>We appreciate your prediction.</p>
+        </div>
         <button class="btnMain" id="modalClose">Close</button>
       </div>
     </div>
 
-    <!-- FIREBASE + APP LOGIC (anonymous auth + realtime votes + Formspree) -->
+    <!-- Firebase + logic -->
     <script type="module">
+      // ---------- CONFIG ----------
       const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzkjneo";
 
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
@@ -532,12 +604,11 @@
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
-      // Your Firebase config
       const firebaseConfig = {
         apiKey: "AIzaSyDJMam9PYVpprTjX-hSx4zqoqkp5AOEQaA",
         authDomain: "baby-prediction-2947c.firebaseapp.com",
         databaseURL:
-          "https://baby-prediction-2947c-default-rtdb.asia-southeast1.firebasedatabase.app/",
+          "https://baby-prediction-2947c-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "baby-prediction-2947c",
         storageBucket: "baby-prediction-2947c.firebasestorage.app",
         messagingSenderId: "746431850655",
@@ -545,12 +616,12 @@
         measurementId: "G-Y4LQT2ZRD5",
       };
 
-      // init firebase
+      // ---------- INIT ----------
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
       const auth = getAuth(app);
 
-      // UI refs
+      // ---------- UI refs ----------
       const choices = Array.from(document.querySelectorAll(".choice"));
       const boyCountEl = document.getElementById("boyCount");
       const girlCountEl = document.getElementById("girlCount");
@@ -571,79 +642,295 @@
       const revealDate = new Date("2025-11-14T00:00:00");
 
       let myUid = null;
+      let selectedValue = null;
+      let authReady = false;
 
-      // Anonymous auth
+      // ---------- Auth + realtime listener ----------
+      function disableVoteUI() {
+        if (voteBtn) {
+          voteBtn.disabled = true;
+          voteBtn.style.opacity = 0.6;
+        }
+      }
+      function enableVoteUI() {
+        if (voteBtn) {
+          voteBtn.disabled = false;
+          voteBtn.style.opacity = 1;
+        }
+      }
+      disableVoteUI();
+
       async function startAuth() {
         try {
           await signInAnonymously(auth);
+          console.log("Anonymous sign-in requested");
         } catch (e) {
-          console.error("Auth error", e);
+          console.error("startAuth error", e);
         }
       }
+
+      function attachRealtimeListener() {
+        if (window._votesListenerAttached) return;
+        window._votesListenerAttached = true;
+        const votesRef = ref(db, "votes");
+        onValue(
+          votesRef,
+          (snap) => {
+            const data = snap.val() || {};
+            let boy = 0,
+              girl = 0;
+            for (const uid in data) {
+              const v = data[uid] && data[uid].vote;
+              if (v === "boy") boy++;
+              if (v === "girl") girl++;
+            }
+            if (boyCountEl) boyCountEl.textContent = boy;
+            if (girlCountEl) girlCountEl.textContent = girl;
+            // reflect my vote
+            if (myUid && data[myUid]) {
+              selectedValue = data[myUid].vote;
+              choices.forEach((c) =>
+                c.classList.toggle(
+                  "selected",
+                  c.dataset.value === selectedValue
+                )
+              );
+            }
+          },
+          (err) => {
+            console.error("Realtime listener error", err);
+          }
+        );
+      }
+
       onAuthStateChanged(auth, (user) => {
-        myUid = user ? user.uid : null;
+        if (user) {
+          myUid = user.uid;
+          authReady = true;
+          console.log("Signed in anonymously as", myUid);
+          attachRealtimeListener();
+          enableVoteUI();
+        } else {
+          myUid = null;
+          authReady = false;
+          disableVoteUI();
+          startAuth();
+        }
       });
       startAuth();
 
-      // Realtime listener -> authoritative counts
-      const votesRef = ref(db, "votes");
-      onValue(votesRef, (snap) => {
-        const data = snap.val() || {};
-        let boy = 0,
-          girl = 0;
-        for (const uid in data) {
-          const v = data[uid] && data[uid].vote;
-          if (v === "boy") boy++;
-          if (v === "girl") girl++;
-        }
-        boyCountEl.textContent = boy;
-        girlCountEl.textContent = girl;
+      // ---------- confetti (self-contained) ----------
+      const confCanvas = document.getElementById("confetti");
+      const ctx = confCanvas.getContext && confCanvas.getContext("2d");
+      let confettiParticles = [],
+        confAnim = false;
+      function resizeCanvas() {
+        if (!ctx) return;
+        confCanvas.width = confCanvas.clientWidth;
+        confCanvas.height = confCanvas.clientHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
 
-        // highlight my vote
-        if (myUid && data[myUid]) {
-          const myVote = data[myUid].vote;
-          choices.forEach((c) =>
-            c.classList.toggle("selected", c.dataset.value === myVote)
-          );
+      function launchConfetti() {
+        if (!ctx) return;
+        for (let i = 0; i < 60; i++) {
+          confettiParticles.push({
+            x: Math.random() * confCanvas.width,
+            y: -Math.random() * confCanvas.height * 0.5,
+            w: 6 + Math.random() * 10,
+            h: 8 + Math.random() * 10,
+            vx: (Math.random() - 0.5) * 4,
+            vy: 2 + Math.random() * 4,
+            rot: Math.random() * 360,
+            vr: (Math.random() - 0.5) * 8,
+            color: ["#d4af37", "#f9e6b0", "#ffd37a"][
+              Math.floor(Math.random() * 3)
+            ],
+          });
         }
-      });
+        if (!confAnim) animateConfetti();
+      }
+      function animateConfetti() {
+        confAnim = true;
+        ctx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+        for (let i = confettiParticles.length - 1; i >= 0; i--) {
+          const p = confettiParticles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.06;
+          p.rot += p.vr;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+          if (p.y > confCanvas.height + 50) confettiParticles.splice(i, 1);
+        }
+        if (confettiParticles.length) requestAnimationFrame(animateConfetti);
+        else {
+          confAnim = false;
+          ctx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+        }
+      }
 
-      // submit vote: write to Firebase and post to Formspree
+      // ---------- sparkles + modal helpers (top-level) ----------
+      function createSparkles(count = 8, duration = 900) {
+        let container = modalWrap.querySelector(".sparkles");
+        if (!container) {
+          container = document.createElement("div");
+          container.className = "sparkles";
+          const modalEl = modalWrap.querySelector(".modal");
+          if (modalEl) modalEl.appendChild(container);
+        }
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement("span");
+          s.className = "spark" + (Math.random() > 0.5 ? " pink" : "");
+          const left = 12 + Math.random() * 76;
+          const top = 22 + Math.random() * 56;
+          s.style.left = left + "%";
+          s.style.top = top + "%";
+          const delay = Math.random() * 220;
+          s.style.animationDelay = delay + "ms";
+          container.appendChild(s);
+          setTimeout(() => {
+            if (s && s.parentNode) s.parentNode.removeChild(s);
+          }, duration + delay + 60);
+        }
+        setTimeout(() => {
+          const cur = modalWrap.querySelector(".sparkles");
+          if (cur && cur.childElementCount === 0)
+            cur.parentNode && cur.parentNode.removeChild(cur);
+        }, duration + 500);
+      }
+
+      function openModalContent(htmlTitle, htmlMessage) {
+        modalTitle.textContent = htmlTitle;
+        modalMsg.innerHTML = htmlMessage;
+        modalWrap.setAttribute("aria-hidden", "false");
+        modalWrap.style.display = "flex";
+        // focus close button (small delay for screenreaders)
+        setTimeout(() => {
+          modalClose.focus();
+        }, 30);
+      }
+      function closeModalSafe() {
+        if (document.activeElement) document.activeElement.blur();
+        modalWrap.style.display = "none";
+        modalWrap.setAttribute("aria-hidden", "true");
+      }
+
+      // ---------- thank you UI (top-level) ----------
+      function showThankYou(nameOrWho, vote) {
+        // Gather name + relation
+        const nm = (nameInput?.value || "").trim();
+        const rel = (relInput?.value || "").trim();
+
+        // Build display name
+        let displayName = "Friend";
+        if (nm && rel) displayName = `${nm} (${rel})`;
+        else if (nm) displayName = nm;
+        else if (rel) displayName = rel;
+
+        // Select heart color by prediction 💙💖
+        const heartEmoji = vote === "boy" ? "💙" : "💖";
+
+        // Random sweet messages
+        const sweetLines = [
+          "Your blessings mean the world to us — thank you for being part of our joy!",
+          "Your good wishes wrap this little one in love already.",
+          "We can feel the love — thank you for celebrating with us!",
+          "Your kind prediction brings a smile to our hearts — thank you!",
+          "Thank you for the warm wishes — we can’t wait to share the joy with you.",
+          "Your excitement makes this moment even more magical — thank you!",
+        ];
+
+        // Boy/Girl-specific line
+        const voteLine =
+          vote === "boy"
+            ? "You believe a little <strong>Prince 🤴</strong> is on his way — may his laughter fill our home with joy!"
+            : "You believe a little <strong>Princess 👸</strong> is coming — may her smile bring endless sunshine!";
+
+        // Pick a random sweet line
+        const randomLine =
+          sweetLines[Math.floor(Math.random() * sweetLines.length)];
+
+        // Set the modal title with colored heart 💙 or 💖
+        modalTitle.textContent = `Thank you, ${displayName} ${heartEmoji}`;
+
+        // Compose message body
+        modalMsg.innerHTML = `
+    <span class="msg-shimmer" aria-hidden="true"></span>
+    <div class="modal-content-inner">
+      <div style="margin-bottom:8px; font-weight:600; color:#2b1f14;">
+        ${randomLine}
+      </div>
+      <div style="font-size:14px; color:#5b4b3a;">
+        ${voteLine}
+      </div>
+    </div>
+  `;
+
+        // Show modal
+        modalWrap.setAttribute("aria-hidden", "false");
+        modalWrap.style.display = "flex";
+        setTimeout(() => modalClose.focus(), 40);
+
+        // Sparkles & confetti
+        createSparkles(10, 900);
+        if (typeof launchConfetti === "function") launchConfetti();
+
+        // Auto-close
+        setTimeout(() => {
+          if (document.activeElement) document.activeElement.blur();
+          modalWrap.style.display = "none";
+          modalWrap.setAttribute("aria-hidden", "true");
+        }, 5500);
+      }
+      // ---------- voting logic ----------
+      function setVoteButtonState(isWorking) {
+        if (!voteBtn) return;
+        voteBtn.disabled = !!isWorking;
+        voteBtn.style.opacity = isWorking ? 0.6 : 1;
+        voteBtn.textContent = isWorking
+          ? "Submitting..."
+          : "Submit Your Prediction";
+      }
+
       async function submitVote(voteValue) {
-        if (!myUid) {
-          await startAuth();
-          await new Promise((r) => setTimeout(r, 250));
-        }
-        if (!myUid) {
-          alert("Unable to sign in. Please try again.");
+        if (!authReady || !myUid) {
+          alert("Still signing in. Please wait a moment and try again.");
           return;
         }
-        // read previous vote
+        setVoteButtonState(true);
+        // read previous
         let previousVote = "";
         try {
           const snap = await get(ref(db, `votes/${myUid}`));
-          const prev = snap.exists() ? snap.val() : null;
-          previousVote = prev && prev.vote ? prev.vote : "";
+          if (snap.exists()) {
+            const prev = snap.val();
+            previousVote = prev && prev.vote ? prev.vote : "";
+          }
         } catch (e) {
           console.warn("read prev err", e);
         }
-
         const payload = {
           vote: voteValue,
           name: (nameInput.value || "").trim(),
           relation: (relInput.value || "").trim(),
           time: new Date().toISOString(),
         };
-
         try {
           await set(ref(db, `votes/${myUid}`), payload);
+          console.log("Vote written to Firebase", payload);
         } catch (e) {
-          console.error("Firebase write error", e);
-          alert("Could not record vote — check connection.");
+          console.error("Firebase write failed", e);
+          alert("Could not save vote. Please check your connection.");
+          setVoteButtonState(false);
           return;
         }
-
-        // send to Formspree (non-blocking)
+        // send to Formspree (best-effort)
         try {
           const body = {
             event: "vote",
@@ -657,14 +944,16 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
-          }).catch((e) => console.warn("Formspree failed", e));
+          })
+            .then((r) => console.log("Formspree status", r.status))
+            .catch((e) => console.warn("Formspree failed", e));
         } catch (e) {
           console.warn("Formspree error", e);
         }
+        setVoteButtonState(false);
       }
 
       // UI selection
-      let selectedValue = null;
       choices.forEach((c) => {
         c.addEventListener("click", () => {
           choices.forEach((x) => x.classList.remove("selected"));
@@ -680,12 +969,11 @@
       });
 
       voteBtn.addEventListener("click", async () => {
-        const toVote = selectedValue;
-        if (!toVote) {
-          alert("Please select Boy or Girl to vote.");
+        if (!selectedValue) {
+          alert("Please select Boy or Girl.");
           return;
         }
-        await submitVote(toVote);
+        await submitVote(selectedValue);
         const nm = (nameInput.value || "").trim(),
           rel = (relInput.value || "").trim();
         const who = nm
@@ -693,10 +981,10 @@
           : rel
           ? rel
           : "Friend";
-        showThankYou(who, toVote);
-        launchConfetti();
+        showThankYou(who, selectedValue);
       });
 
+      // share
       shareBtn.addEventListener("click", () => {
         const txt = encodeURIComponent(
           `Join Aman & Akanksha’s Royal Baby Reveal — Cast your prediction: ${location.href}`
@@ -712,22 +1000,10 @@
         else window.open("https://wa.me/?text=" + txt, "_blank");
       });
 
-      function showThankYou(who, vote) {
-        modalTitle.textContent = `Thank you, ${who}!`;
-        modalMsg.innerHTML = `Your royal prediction is recorded: <strong>${
-          vote === "boy" ? "Prince 👑" : "Princess 👑"
-        }</strong>.<br/>We appreciate your blessings.`;
-        modalWrap.style.display = "flex";
-        modalWrap.setAttribute("aria-hidden", "false");
-        setTimeout(() => closeModal(), 4000);
-      }
-      function closeModal() {
-        modalWrap.style.display = "none";
-        modalWrap.setAttribute("aria-hidden", "true");
-      }
-      modalClose.addEventListener("click", closeModal);
+      // modal close handlers
+      modalClose.addEventListener("click", () => closeModalSafe());
       modalWrap.addEventListener("click", (e) => {
-        if (e.target === modalWrap) closeModal();
+        if (e.target === modalWrap) closeModalSafe();
       });
 
       // countdown
@@ -755,74 +1031,17 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      // confetti
-      const canvas = document.getElementById("confetti");
-      const ctx = canvas.getContext && canvas.getContext("2d");
-      let confetti = [],
-        confAnim = false;
-      function resizeCanvas() {
-        if (!ctx) return;
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-      }
-      window.addEventListener("resize", resizeCanvas);
-      resizeCanvas();
-      function launchConfetti() {
-        if (!ctx) return;
-        for (let i = 0; i < 70; i++) {
-          confetti.push({
-            x: Math.random() * canvas.width,
-            y: (-Math.random() * canvas.height) / 2,
-            w: 6 + Math.random() * 10,
-            h: 8 + Math.random() * 10,
-            vx: (Math.random() - 0.5) * 4,
-            vy: 2 + Math.random() * 4,
-            rot: Math.random() * 360,
-            vr: (Math.random() - 0.5) * 8,
-            color: ["#d4af37", "#f9e6b0", "#ffd37a"][
-              Math.floor(Math.random() * 3)
-            ],
-          });
-        }
-        if (!confAnim) animateConfetti();
-      }
-      function animateConfetti() {
-        confAnim = true;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = confetti.length - 1; i >= 0; i--) {
-          const p = confetti[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.06;
-          p.rot += p.vr;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate((p.rot * Math.PI) / 180);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-          ctx.restore();
-          if (p.y > canvas.height + 50) confetti.splice(i, 1);
-        }
-        if (confetti.length) requestAnimationFrame(animateConfetti);
-        else {
-          confAnim = false;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-      }
-
-      // keyboard nav
+      // keyboard nav for choices
       choices.forEach((c, i) =>
         c.addEventListener("keydown", (e) => {
           if (e.key === "ArrowDown" || e.key === "ArrowRight")
             choices[(i + 1) % choices.length].focus();
           if (e.key === "ArrowUp" || e.key === "ArrowLeft")
             choices[(i - 1 + choices.length) % choices.length].focus();
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            c.click();
-          }
         })
       );
+
+      console.log("Script initialized, waiting for auth...");
     </script>
   </body>
 </html>
