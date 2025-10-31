@@ -3,23 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Baby Reveal — Boy or Girl</title>
+    <title>
+      Welcome Little One — Cast Your Vote — Baby Boy Gang vs Baby Girl Gang
+    </title>
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+
     <style>
       :root {
+        --bg-1: #fffaf4;
+        --bg-2: #f3e7c8;
+        --card: rgba(255, 255, 255, 0.86);
+        --muted: #7d6a50;
         --gold: #d4af37;
-        --cream: #fff9f0;
-        --rose: #ff9cb2;
-        --royal: #6ea8ff;
-        --bg1: #fffaf4;
-        --bg2: #f1e5c7;
-        --text: #3a2f1e;
-        --muted: #8c7b60;
-        --card-bg: rgba(255, 255, 255, 0.66);
-        --radius: 20px;
+        --boy-1: #2f6ff7;
+        --boy-2: #89b8ff;
+        --girl-1: #ff4da6;
+        --girl-2: #ffb0d6;
+        --radius: 18px;
+        --glass-border: rgba(212, 175, 55, 0.14);
+        --accent-shadow: 0 18px 60px rgba(160, 120, 30, 0.12);
       }
       * {
         box-sizing: border-box;
@@ -27,167 +33,202 @@
       html,
       body {
         height: 100%;
+        margin: 0;
       }
       body {
-        margin: 0;
         font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
           "Helvetica Neue", Arial;
-        background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
-        color: var(--text);
+        background: radial-gradient(
+            1200px 600px at 10% 10%,
+            rgba(212, 175, 55, 0.06),
+            transparent 8%
+          ),
+          linear-gradient(180deg, var(--bg-1), var(--bg-2));
+        color: #2b1f14;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 28px;
+        padding: 30px;
       }
       .wrap {
         width: 100%;
-        max-width: 960px;
+        max-width: 1080px;
+        animation: fadeInUp 0.5s ease both;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       .card {
-        background: var(--card-bg);
-        border-radius: calc(var(--radius)+6px);
-        border: 1px solid rgba(212, 175, 55, 0.24);
-        box-shadow: 0 24px 70px rgba(180, 145, 45, 0.2);
-        padding: 26px;
+        background: var(--card);
+        border-radius: calc(var(--radius)+8px);
+        padding: 22px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--accent-shadow);
         position: relative;
         overflow: hidden;
-        backdrop-filter: blur(10px);
       }
-
-      /* Header + shimmer */
       .header {
-        text-align: center;
-        margin-bottom: 10px;
-        padding: 6px 0;
-        position: relative;
-      }
-      .crest {
-        font-family: "Playfair Display", serif;
-        font-size: 40px;
-        color: var(--text);
-      }
-      .title {
-        font-family: "Playfair Display", serif;
-        font-size: 30px;
-        margin: 6px 0;
-        color: var(--text);
-        display: inline-block;
-        position: relative;
-        padding: 6px 14px;
-        border-radius: 12px;
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.35),
-          rgba(255, 255, 255, 0.1)
-        );
-        border: 1px solid rgba(212, 175, 55, 0.18);
-      }
-      .title::before {
-        content: "";
-        position: absolute;
-        left: -60%;
-        top: 0;
-        width: 40%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0),
-          rgba(255, 255, 255, 0.6),
-          rgba(255, 255, 255, 0)
-        );
-        transform: skewX(-20deg);
-        animation: shimmer 3.8s linear infinite;
-        border-radius: 12px;
-        mix-blend-mode: overlay;
-      }
-      @keyframes shimmer {
-        0% {
-          left: -60%;
-        }
-        50% {
-          left: 120%;
-        }
-        100% {
-          left: 120%;
-        }
-      }
-      .sub {
-        color: var(--muted);
-        margin: 4px 0 10px;
-        font-size: 14px;
-      }
-
-      /* countdown under title */
-      .headerCount {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin: 12px 0 10px;
-      }
-      .countCard {
-        background: rgba(255, 255, 255, 0.85);
-        border-radius: 10px;
-        padding: 8px 12px;
-        border: 1px solid rgba(212, 175, 55, 0.12);
-        min-width: 70px;
-        text-align: center;
-        font-weight: 800;
-        color: var(--text);
-      }
-      .countLabel {
-        font-size: 12px;
-        color: var(--muted);
-        font-weight: 600;
-        margin-top: 4px;
-      }
-
-      /* teams */
-      .teams {
-        display: flex;
-        gap: 18px;
-        justify-content: center;
-        margin-bottom: 18px;
-      }
-      .team-pill {
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .crest {
+        background: linear-gradient(180deg, #fffaf0, #fff3d6);
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.08);
+        border: 1px solid rgba(212, 175, 55, 0.12);
+      }
+      .brand-text .title {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        margin: 0;
+      }
+      .brand-text .subtitle {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 4px;
+      }
+      .controls-right {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .countdownTop {
+        display: flex;
         gap: 10px;
-        padding: 10px 18px;
-        border-radius: 12px;
+        align-items: center;
+      }
+      .count-pill {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        text-align: center;
+        min-width: 62px;
+      }
+      .count-pill .num {
+        font-weight: 800;
+      }
+      .latest-supporter {
         background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.68),
-          rgba(255, 255, 255, 0.56)
+          90deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(255, 255, 255, 0.95)
         );
-        border: 1px solid rgba(212, 175, 55, 0.16);
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.06);
-        min-width: 160px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-width: 260px;
         justify-content: center;
       }
-      .team-pill .label {
-        font-weight: 700;
-        color: var(--muted);
-        margin-right: 8px;
+
+      .teams-row {
+        display: flex;
+        gap: 14px;
+        margin-top: 16px;
       }
-      .team-pill .count {
+      .team-card {
+        flex: 1;
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(255, 255, 255, 0.95)
+        );
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
+          box-shadow 0.28s ease, border-color 0.28s ease;
+      }
+      .team-card.leader {
+        transform: translateY(-8px);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
+        border: 2px solid var(--gold);
+      }
+      .team-name {
+        font-weight: 900;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .team-score {
         font-family: "Playfair Display", serif;
-        font-weight: 700;
+        font-size: 36px;
         color: var(--gold);
-        font-size: 18px;
+        margin-top: 6px;
+      }
+      .progress-wrap {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .progress-bg {
+        background: rgba(0, 0, 0, 0.06);
+        height: 14px;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 999px;
+        transition: width 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+        box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.06);
+      }
+      .percent {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .team-boy .progress-fill {
+        background: linear-gradient(90deg, var(--boy-1), var(--boy-2));
+      }
+      .team-girl .progress-fill {
+        background: linear-gradient(90deg, var(--girl-1), var(--girl-2));
       }
 
       .grid {
         display: grid;
         grid-template-columns: 1fr 380px;
-        gap: 22px;
-        align-items: start;
+        gap: 20px;
+        margin-top: 18px;
       }
-      @media (max-width: 880px) {
+      @media (max-width: 920px) {
         .grid {
           grid-template-columns: 1fr;
         }
-        .team-pill {
-          min-width: auto;
+        .teams-row {
+          flex-direction: column;
         }
       }
 
@@ -197,62 +238,79 @@
         gap: 14px;
       }
       .choice {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.74),
-          rgba(255, 255, 255, 0.64)
-        );
-        border-radius: 14px;
-        padding: 18px;
-        border: 1px solid rgba(212, 175, 55, 0.14);
         display: flex;
         align-items: center;
         gap: 16px;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(255, 255, 255, 0.96)
+        );
         cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease,
+          border-color 0.18s ease;
         position: relative;
-        transition: transform 0.16s ease, box-shadow 0.16s ease;
+        overflow: visible;
       }
       .choice:hover {
         transform: translateY(-6px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.08);
       }
-      .choice.selected {
-        transform: translateY(-12px);
-        box-shadow: 0 24px 56px rgba(0, 0, 0, 0.12);
-        border-color: rgba(212, 175, 55, 0.28);
-      }
-      .emoji {
-        font-size: 44px;
+      .choice .emoji {
+        font-size: 40px;
         width: 64px;
         text-align: center;
-      }
-      .meta {
+        border-radius: 10px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
-      .titleSmall {
+      .choice .meta .titleSmall {
         font-family: "Playfair Display", serif;
-        font-weight: 700;
-        font-size: 20px;
-        margin-bottom: 4px;
+        font-weight: 800;
+        font-size: 18px;
       }
-      .desc {
+      .choice .meta .desc {
         color: var(--muted);
         font-size: 13px;
+        margin-top: 4px;
+      }
+
+      .choice.selected {
+        transform: translateY(-14px);
+        box-shadow: 0 36px 90px rgba(0, 0, 0, 0.12);
+        border-color: rgba(212, 175, 55, 0.22);
+        animation: choicePulse 0.7s ease;
+        z-index: 2;
+      }
+      @keyframes choicePulse {
+        0% {
+          transform: translateY(-8px) scale(1);
+        }
+        50% {
+          transform: translateY(-14px) scale(1.02);
+        }
+        100% {
+          transform: translateY(-14px) scale(1);
+        }
       }
       .choice::after {
         content: "";
         position: absolute;
         right: 12px;
         top: 12px;
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
         display: none;
         align-items: center;
         justify-content: center;
         font-weight: 900;
-        font-size: 16px;
+        font-size: 18px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
       }
       .choice.selected::after {
         display: flex;
@@ -271,65 +329,80 @@
       .panel {
         background: linear-gradient(
           180deg,
-          rgba(255, 255, 255, 0.72),
-          rgba(255, 255, 255, 0.64)
+          rgba(255, 255, 255, 0.98),
+          rgba(255, 255, 255, 0.96)
         );
-        border-radius: 14px;
         padding: 16px;
-        border: 1px solid rgba(212, 175, 55, 0.14);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
       }
       .panel h3 {
-        margin: 0 0 8px;
         font-family: "Playfair Display", serif;
+        margin: 0 0 6px;
       }
       .panel .muted {
         color: var(--muted);
         font-size: 13px;
-        margin-bottom: 10px;
       }
       .inputs {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin-bottom: 10px;
+        margin-top: 10px;
       }
       .inputs input {
-        padding: 10px;
+        padding: 11px;
         border-radius: 10px;
-        border: 1px solid rgba(212, 175, 55, 0.12);
+        border: 1px solid rgba(212, 175, 55, 0.1);
         background: transparent;
+        transition: box-shadow 0.18s ease, transform 0.12s ease;
+      }
+      .inputs input:focus {
+        outline: none;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.08);
+        transform: translateY(-2px);
       }
       .cta {
         display: flex;
         gap: 10px;
+        margin-top: 12px;
         align-items: center;
       }
       .btnMain {
-        background: linear-gradient(90deg, #f9e6b0, #f3d67a);
+        background: linear-gradient(90deg, #ffd37a, #f3d67a);
         border: 0;
         padding: 12px 14px;
         border-radius: 10px;
-        font-weight: 800;
+        font-weight: 900;
         cursor: pointer;
-        color: #3a2f1e;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.08);
+      }
+      .btnMain:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .btnMain:hover:not(:disabled) {
+        transform: translateY(-4px);
       }
       .btnGhost {
         background: transparent;
-        border: 1px dashed rgba(212, 175, 55, 0.18);
-        padding: 10px 12px;
+        border: 1px dashed rgba(212, 175, 55, 0.12);
+        padding: 10px;
         border-radius: 10px;
         cursor: pointer;
         color: var(--muted);
       }
 
       footer {
+        margin-top: 14px;
         text-align: center;
         color: var(--muted);
-        margin-top: 16px;
         font-size: 13px;
       }
 
-      /* modal + sparkles */
       .modalWrap {
         position: fixed;
         left: 0;
@@ -339,16 +412,16 @@
         display: none;
         align-items: center;
         justify-content: center;
-        background: rgba(10, 10, 10, 0.4);
+        background: rgba(10, 10, 10, 0.45);
         z-index: 999;
       }
       .modal {
         background: white;
         padding: 18px;
         border-radius: 12px;
-        max-width: 420px;
-        width: 92%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        max-width: 520px;
+        width: 94%;
+        box-shadow: 0 26px 80px rgba(0, 0, 0, 0.45);
         text-align: center;
         position: relative;
         overflow: visible;
@@ -358,9 +431,28 @@
         font-family: "Playfair Display", serif;
         color: #2b1f14;
       }
-      .modal p {
-        color: #5b4b3a;
-        margin: 8px 0 12px;
+      .modal .msg-shimmer {
+        display: block;
+        position: absolute;
+        left: -8%;
+        top: -14%;
+        width: 120%;
+        height: 40%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(212, 175, 55, 0.18) 0%,
+          rgba(212, 175, 55, 0.06) 40%,
+          rgba(0, 0, 0, 0) 60%
+        );
+        filter: blur(8px);
+        transform: rotate(-4deg);
+        pointer-events: none;
+        z-index: 1;
+        border-radius: 12px;
+      }
+      .modal .modal-content-inner {
+        position: relative;
+        z-index: 3;
       }
       .modal .sparkles {
         position: absolute;
@@ -374,8 +466,8 @@
       }
       .modal .sparkles .spark {
         position: absolute;
-        width: 8px;
-        height: 8px;
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
         background: linear-gradient(180deg, #fff9da, #ffd37a);
         box-shadow: 0 0 8px rgba(212, 175, 55, 0.9),
@@ -407,50 +499,35 @@
           transform: scale(0.6) translateY(-20px);
         }
       }
-      .modal .msg-shimmer {
-        display: block;
-        position: absolute;
-        left: -8%;
-        top: -14%;
-        width: 120%;
-        height: 40%;
-        background: radial-gradient(
-          ellipse at center,
-          rgba(212, 175, 55, 0.18) 0%,
-          rgba(212, 175, 55, 0.06) 40%,
-          rgba(0, 0, 0, 0) 60%
-        );
-        filter: blur(6px);
-        transform: rotate(-4deg);
-        pointer-events: none;
-        z-index: 1;
-        border-radius: 12px;
-      }
-      .modal .modal-content-inner {
-        position: relative;
-        z-index: 3;
+      .modal .modal-actions {
+        margin-top: 12px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
       }
 
       #confetti {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 10;
+        z-index: 1000;
       }
-
-      @media (max-width: 880px) {
-        .grid {
-          grid-template-columns: 1fr;
+      @media (max-width: 560px) {
+        .brand-text .title {
+          font-size: 18px;
         }
-        .teams {
-          flex-direction: column;
-          gap: 8px;
+        .team-score {
+          font-size: 28px;
         }
-        .team-pill {
-          min-width: auto;
+        .choice .emoji {
+          font-size: 34px;
+          width: 52px;
+        }
+        .latest-supporter {
+          min-width: 160px;
         }
       }
     </style>
@@ -458,49 +535,92 @@
   <body>
     <div class="wrap">
       <div class="card" id="card">
-        <canvas id="confetti"></canvas>
-
         <div class="header">
-          <div class="crest">👑</div>
-          <div class="title">Baby Reveal</div>
-          <p class="sub">
-            Aman & Akanksha invite you — predict whether it will be a prince or
-            princess
-          </p>
+          <div class="brand">
+            <div class="crest">👑</div>
+            <div class="brand-text">
+              <div class="title">Welcome Little One — Cast Your Vote</div>
+              <div class="subtitle">
+                Aman &amp; Akanksha — Pick a side and bless the little one
+              </div>
+            </div>
+          </div>
 
-          <div class="headerCount" aria-hidden="false">
-            <div class="countCard">
-              <div id="cdDays">0</div>
-              <div class="countLabel">Days</div>
+          <div class="controls-right">
+            <div class="countdownTop" aria-hidden="false">
+              <div
+                style="
+                  font-weight: 800;
+                  color: var(--muted);
+                  font-size: 13px;
+                  margin-right: 8px;
+                "
+              >
+                Reveal in
+              </div>
+              <div class="count-pill">
+                <div class="num" id="cdDays">0</div>
+                <div style="font-size: 11px; color: var(--muted)">Days</div>
+              </div>
+              <div class="count-pill">
+                <div class="num" id="cdHours">0</div>
+                <div style="font-size: 11px; color: var(--muted)">Hours</div>
+              </div>
+              <div class="count-pill">
+                <div class="num" id="cdMins">0</div>
+                <div style="font-size: 11px; color: var(--muted)">Mins</div>
+              </div>
+              <div class="count-pill">
+                <div class="num" id="cdSecs">0</div>
+                <div style="font-size: 11px; color: var(--muted)">Secs</div>
+              </div>
             </div>
-            <div class="countCard">
-              <div id="cdHours">0</div>
-              <div class="countLabel">Hours</div>
-            </div>
-            <div class="countCard">
-              <div id="cdMins">0</div>
-              <div class="countLabel">Mins</div>
-            </div>
-            <div class="countCard">
-              <div id="cdSecs">0</div>
-              <div class="countLabel">Secs</div>
+
+            <div
+              id="latestSupporter"
+              class="latest-supporter"
+              aria-live="polite"
+              title="Latest supporter"
+            >
+              Waiting for supporters...
             </div>
           </div>
         </div>
 
-        <div class="teams">
-          <div class="team-pill">
-            <span class="label">Boy Votes</span
-            ><span class="count" id="boyCount">0</span>
+        <div class="teams-row" style="margin-top: 16px">
+          <div id="teamBoyCard" class="team-card team-boy">
+            <div class="team-name">
+              <span class="team-name-badge">Baby Boy Gang</span>
+            </div>
+            <div class="team-score" id="boyCount">0</div>
+            <div class="progress-wrap" style="width: 100%; margin-top: 10px">
+              <div class="progress-bg">
+                <div id="boyFill" class="progress-fill" style="width: 0%"></div>
+              </div>
+              <div class="percent" id="boyPercent">0%</div>
+            </div>
           </div>
-          <div class="team-pill">
-            <span class="label">Girl Votes</span
-            ><span class="count" id="girlCount">0</span>
+
+          <div id="teamGirlCard" class="team-card team-girl">
+            <div class="team-name">
+              <span class="team-name-badge">Baby Girl Gang</span>
+            </div>
+            <div class="team-score" id="girlCount">0</div>
+            <div class="progress-wrap" style="width: 100%; margin-top: 10px">
+              <div class="progress-bg">
+                <div
+                  id="girlFill"
+                  class="progress-fill"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <div class="percent" id="girlPercent">0%</div>
+            </div>
           </div>
         </div>
 
         <div class="grid">
-          <div class="choices">
+          <div class="choices" aria-hidden="false">
             <div
               class="choice"
               id="boy"
@@ -509,10 +629,18 @@
               tabindex="0"
               aria-pressed="false"
             >
-              <div class="emoji">🤴💙</div>
+              <div
+                class="emoji"
+                style="
+                  background: linear-gradient(180deg, var(--boy-2), #d7e9ff);
+                  border: 1px solid rgba(0, 0, 0, 0.04);
+                "
+              >
+                🤴
+              </div>
               <div class="meta">
-                <div class="titleSmall">It's a Boy!</div>
-                <div class="desc">Choose if you predict a little prince</div>
+                <div class="titleSmall">Baby Boy Gang</div>
+                <div class="desc">Predict a prince — join the Boy Gang</div>
               </div>
             </div>
 
@@ -524,15 +652,23 @@
               tabindex="0"
               aria-pressed="false"
             >
-              <div class="emoji">👸💖</div>
+              <div
+                class="emoji"
+                style="
+                  background: linear-gradient(180deg, var(--girl-2), #fff0f4);
+                  border: 1px solid rgba(0, 0, 0, 0.04);
+                "
+              >
+                👸
+              </div>
               <div class="meta">
-                <div class="titleSmall">It's a Girl!</div>
-                <div class="desc">Choose if you predict a little princess</div>
+                <div class="titleSmall">Baby Girl Gang</div>
+                <div class="desc">Predict a princess — join the Girl Gang</div>
               </div>
             </div>
           </div>
 
-          <div class="panel">
+          <div class="panel" aria-hidden="false">
             <h3>Make your prediction</h3>
             <div class="muted">
               Reveal Date: <strong>14 November 2025</strong>
@@ -542,28 +678,36 @@
               <input id="name" placeholder="Your Name (optional)" />
               <input
                 id="relation"
-                placeholder="Relation (e.g., Masi, Chachu)"
+                placeholder="Relation (required — e.g., Papa, Masi)"
               />
             </div>
 
-            <div class="cta" style="margin-top: 6px">
-              <button class="btnMain" id="voteBtn">
+            <div class="cta">
+              <button class="btnMain" id="voteBtn" disabled>
                 Submit Your Prediction
               </button>
               <button class="btnGhost" id="shareBtn">Share</button>
             </div>
 
             <div style="margin-top: 12px; font-size: 13px; color: var(--muted)">
-              Tip: Enter your name to get a personalized thank-you after voting.
+              Tip: relation is required so we can personalize your thank-you.
             </div>
           </div>
         </div>
 
-        <footer>With love, Aman & Akanksha</footer>
+        <footer
+          style="
+            margin-top: 14px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+          "
+        >
+          With love, Aman &amp; Akanksha
+        </footer>
       </div>
     </div>
 
-    <!-- Thank you modal -->
     <div
       class="modalWrap"
       id="modalWrap"
@@ -581,11 +725,15 @@
         <div id="modalMsg" class="modal-content">
           <p>We appreciate your prediction.</p>
         </div>
-        <button class="btnMain" id="modalClose">Close</button>
+        <div class="sparkles" aria-hidden="true"></div>
+        <div class="modal-actions">
+          <button class="btnMain" id="modalClose">Close</button>
+        </div>
       </div>
     </div>
 
-    <!-- Firebase + logic -->
+    <canvas id="confetti"></canvas>
+
     <script type="module">
       // ---------- CONFIG ----------
       const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzkjneo";
@@ -621,18 +769,27 @@
       const db = getDatabase(app);
       const auth = getAuth(app);
 
-      // ---------- UI refs ----------
+      // ---------- UI REFS ----------
       const choices = Array.from(document.querySelectorAll(".choice"));
       const boyCountEl = document.getElementById("boyCount");
       const girlCountEl = document.getElementById("girlCount");
+      const boyFill = document.getElementById("boyFill");
+      const girlFill = document.getElementById("girlFill");
+      const boyPercent = document.getElementById("boyPercent");
+      const girlPercent = document.getElementById("girlPercent");
+      const teamBoyCard = document.getElementById("teamBoyCard");
+      const teamGirlCard = document.getElementById("teamGirlCard");
+
       const voteBtn = document.getElementById("voteBtn");
       const shareBtn = document.getElementById("shareBtn");
       const nameInput = document.getElementById("name");
       const relInput = document.getElementById("relation");
+
       const modalWrap = document.getElementById("modalWrap");
       const modalTitle = document.getElementById("modalTitle");
       const modalMsg = document.getElementById("modalMsg");
       const modalClose = document.getElementById("modalClose");
+      const latestSupporterEl = document.getElementById("latestSupporter");
 
       const cdDays = document.getElementById("cdDays");
       const cdHours = document.getElementById("cdHours");
@@ -645,21 +802,50 @@
       let selectedValue = null;
       let authReady = false;
 
-      // ---------- Auth + realtime listener ----------
-      function disableVoteUI() {
-        if (voteBtn) {
-          voteBtn.disabled = true;
-          voteBtn.style.opacity = 0.6;
-        }
+      // ---------- helpers ----------
+      function updateVoteButtonState() {
+        const relFilled = (relInput.value || "").trim().length > 0;
+        const selectionMade = !!selectedValue;
+        voteBtn.disabled = !(relFilled && selectionMade && authReady);
+        voteBtn.style.opacity = voteBtn.disabled ? 0.5 : 1;
       }
-      function enableVoteUI() {
-        if (voteBtn) {
-          voteBtn.disabled = false;
-          voteBtn.style.opacity = 1;
-        }
-      }
-      disableVoteUI();
 
+      // pretty time-ago helper
+      function timeAgo(isoString) {
+        if (!isoString) return "";
+        const then = new Date(isoString).getTime();
+        if (isNaN(then)) return "";
+        const now = Date.now();
+        const diff = Math.floor((now - then) / 1000); // seconds
+        if (diff < 6) return "just now";
+        if (diff < 60) return diff + "s ago";
+        if (diff < 3600) return Math.floor(diff / 60) + "m ago";
+        if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+        if (diff < 60 * 60 * 24 * 30) return Math.floor(diff / 86400) + "d ago";
+        // else show months/years
+        if (diff < 60 * 60 * 24 * 365)
+          return Math.floor(diff / (86400 * 30)) + "mo ago";
+        return Math.floor(diff / (86400 * 365)) + "y ago";
+      }
+      function formatExactLocal(isoString) {
+        if (!isoString) return "";
+        const d = new Date(isoString);
+        // use Asia/Kolkata display (your project timezone)
+        try {
+          return d.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch (e) {
+          return d.toString();
+        }
+      }
+
+      // ---------- auth ----------
       async function startAuth() {
         try {
           await signInAnonymously(auth);
@@ -668,10 +854,13 @@
           console.error("startAuth error", e);
         }
       }
+      startAuth();
 
+      // ---------- realtime listeners ----------
       function attachRealtimeListener() {
         if (window._votesListenerAttached) return;
         window._votesListenerAttached = true;
+
         const votesRef = ref(db, "votes");
         onValue(
           votesRef,
@@ -684,9 +873,29 @@
               if (v === "boy") boy++;
               if (v === "girl") girl++;
             }
-            if (boyCountEl) boyCountEl.textContent = boy;
-            if (girlCountEl) girlCountEl.textContent = girl;
-            // reflect my vote
+
+            // update counts
+            boyCountEl.textContent = boy;
+            girlCountEl.textContent = girl;
+
+            // percentages
+            const total = boy + girl || 0;
+            let boyP = 0,
+              girlP = 0;
+            if (total > 0) {
+              boyP = Math.round((boy / total) * 100);
+              girlP = 100 - boyP;
+            }
+            boyFill.style.width = boyP + "%";
+            girlFill.style.width = girlP + "%";
+            boyPercent.textContent = boyP + "%";
+            girlPercent.textContent = girlP + "%";
+
+            // leader UI
+            teamBoyCard.classList.toggle("leader", boy > girl);
+            teamGirlCard.classList.toggle("leader", girl > boy);
+
+            // reflect my vote visually
             if (myUid && data[myUid]) {
               selectedValue = data[myUid].vote;
               choices.forEach((c) =>
@@ -695,10 +904,41 @@
                   c.dataset.value === selectedValue
                 )
               );
+              updateVoteButtonState();
             }
           },
           (err) => {
-            console.error("Realtime listener error", err);
+            console.error("Realtime listener error (votes):", err);
+          }
+        );
+
+        const lastRef = ref(db, "lastVote");
+        onValue(
+          lastRef,
+          (snap) => {
+            const val = snap.val();
+            if (!val) {
+              latestSupporterEl.textContent = "Waiting for supporters...";
+              latestSupporterEl.title = "No supporters yet";
+              return;
+            }
+            const nm = (val.name || "").trim();
+            const rel = (val.relation || "").trim();
+            let displayName =
+              nm && rel ? `${nm} (${rel})` : nm || rel || "Friend";
+            const heart =
+              val.vote === "boy" ? "💙" : val.vote === "girl" ? "💖" : "❤️";
+            const gang =
+              val.vote === "boy" ? "Baby Boy Gang" : "Baby Girl Gang";
+            const prettyAgo = timeAgo(val.time);
+            const exact = formatExactLocal(val.time);
+            latestSupporterEl.textContent = `${displayName} — ${gang} ${heart}${
+              prettyAgo ? " · " + prettyAgo : ""
+            }`;
+            latestSupporterEl.title = `${displayName} — ${gang} (${exact})`;
+          },
+          (err) => {
+            console.error("Realtime listener error (lastVote):", err);
           }
         );
       }
@@ -709,38 +949,36 @@
           authReady = true;
           console.log("Signed in anonymously as", myUid);
           attachRealtimeListener();
-          enableVoteUI();
+          updateVoteButtonState();
         } else {
           myUid = null;
           authReady = false;
-          disableVoteUI();
           startAuth();
         }
       });
-      startAuth();
 
-      // ---------- confetti (self-contained) ----------
+      // ---------- confetti ----------
       const confCanvas = document.getElementById("confetti");
       const ctx = confCanvas.getContext && confCanvas.getContext("2d");
       let confettiParticles = [],
         confAnim = false;
       function resizeCanvas() {
         if (!ctx) return;
-        confCanvas.width = confCanvas.clientWidth;
-        confCanvas.height = confCanvas.clientHeight;
+        confCanvas.width = window.innerWidth;
+        confCanvas.height = window.innerHeight;
       }
       window.addEventListener("resize", resizeCanvas);
       resizeCanvas();
 
       function launchConfetti() {
         if (!ctx) return;
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 80; i++) {
           confettiParticles.push({
             x: Math.random() * confCanvas.width,
             y: -Math.random() * confCanvas.height * 0.5,
-            w: 6 + Math.random() * 10,
+            w: 6 + Math.random() * 8,
             h: 8 + Math.random() * 10,
-            vx: (Math.random() - 0.5) * 4,
+            vx: (Math.random() - 0.5) * 6,
             vy: 2 + Math.random() * 4,
             rot: Math.random() * 360,
             vr: (Math.random() - 0.5) * 8,
@@ -766,7 +1004,7 @@
           ctx.fillStyle = p.color;
           ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
           ctx.restore();
-          if (p.y > confCanvas.height + 50) confettiParticles.splice(i, 1);
+          if (p.y > confCanvas.height + 80) confettiParticles.splice(i, 1);
         }
         if (confettiParticles.length) requestAnimationFrame(animateConfetti);
         else {
@@ -775,8 +1013,8 @@
         }
       }
 
-      // ---------- sparkles + modal helpers (top-level) ----------
-      function createSparkles(count = 8, duration = 900) {
+      // ---------- sparkles ----------
+      function createSparkles(count = 10, duration = 900) {
         let container = modalWrap.querySelector(".sparkles");
         if (!container) {
           container = document.createElement("div");
@@ -787,8 +1025,8 @@
         for (let i = 0; i < count; i++) {
           const s = document.createElement("span");
           s.className = "spark" + (Math.random() > 0.5 ? " pink" : "");
-          const left = 12 + Math.random() * 76;
-          const top = 22 + Math.random() * 56;
+          const left = 8 + Math.random() * 84;
+          const top = 18 + Math.random() * 60;
           s.style.left = left + "%";
           s.style.top = top + "%";
           const delay = Math.random() * 220;
@@ -796,24 +1034,22 @@
           container.appendChild(s);
           setTimeout(() => {
             if (s && s.parentNode) s.parentNode.removeChild(s);
-          }, duration + delay + 60);
+          }, duration + delay + 80);
         }
         setTimeout(() => {
           const cur = modalWrap.querySelector(".sparkles");
           if (cur && cur.childElementCount === 0)
             cur.parentNode && cur.parentNode.removeChild(cur);
-        }, duration + 500);
+        }, duration + 700);
       }
 
+      // ---------- modal ----------
       function openModalContent(htmlTitle, htmlMessage) {
         modalTitle.textContent = htmlTitle;
         modalMsg.innerHTML = htmlMessage;
         modalWrap.setAttribute("aria-hidden", "false");
         modalWrap.style.display = "flex";
-        // focus close button (small delay for screenreaders)
-        setTimeout(() => {
-          modalClose.focus();
-        }, 30);
+        setTimeout(() => modalClose.focus(), 40);
       }
       function closeModalSafe() {
         if (document.activeElement) document.activeElement.blur();
@@ -821,22 +1057,16 @@
         modalWrap.setAttribute("aria-hidden", "true");
       }
 
-      // ---------- thank you UI (top-level) ----------
+      // ---------- show thank you ----------
       function showThankYou(nameOrWho, vote) {
-        // Gather name + relation
         const nm = (nameInput?.value || "").trim();
         const rel = (relInput?.value || "").trim();
-
-        // Build display name
         let displayName = "Friend";
         if (nm && rel) displayName = `${nm} (${rel})`;
         else if (nm) displayName = nm;
         else if (rel) displayName = rel;
 
-        // Select heart color by prediction 💙💖
-        const heartEmoji = vote === "boy" ? "💙" : "💖";
-
-        // Random sweet messages
+        const heart = vote === "boy" ? "💙" : "💖";
         const sweetLines = [
           "Your blessings mean the world to us — thank you for being part of our joy!",
           "Your good wishes wrap this little one in love already.",
@@ -845,54 +1075,25 @@
           "Thank you for the warm wishes — we can’t wait to share the joy with you.",
           "Your excitement makes this moment even more magical — thank you!",
         ];
-
-        // Boy/Girl-specific line
         const voteLine =
           vote === "boy"
             ? "You believe a little <strong>Prince 🤴</strong> is on his way — may his laughter fill our home with joy!"
             : "You believe a little <strong>Princess 👸</strong> is coming — may her smile bring endless sunshine!";
-
-        // Pick a random sweet line
         const randomLine =
           sweetLines[Math.floor(Math.random() * sweetLines.length)];
 
-        // Set the modal title with colored heart 💙 or 💖
-        modalTitle.textContent = `Thank you, ${displayName} ${heartEmoji}`;
-
-        // Compose message body
-        modalMsg.innerHTML = `
-    <span class="msg-shimmer" aria-hidden="true"></span>
-    <div class="modal-content-inner">
-      <div style="margin-bottom:8px; font-weight:600; color:#2b1f14;">
-        ${randomLine}
-      </div>
-      <div style="font-size:14px; color:#5b4b3a;">
-        ${voteLine}
-      </div>
-    </div>
-  `;
-
-        // Show modal
-        modalWrap.setAttribute("aria-hidden", "false");
-        modalWrap.style.display = "flex";
-        setTimeout(() => modalClose.focus(), 40);
-
-        // Sparkles & confetti
-        createSparkles(10, 900);
-        if (typeof launchConfetti === "function") launchConfetti();
-
-        // Auto-close
-        setTimeout(() => {
-          if (document.activeElement) document.activeElement.blur();
-          modalWrap.style.display = "none";
-          modalWrap.setAttribute("aria-hidden", "true");
-        }, 5500);
+        const titleText = `Thank you, ${displayName} ${heart}`;
+        const html = `<span class="msg-shimmer" aria-hidden="true"></span><div class="modal-content-inner"><div style="margin-bottom:8px;font-weight:600;color:#2b1f14">${randomLine}</div><div style="font-size:14px;color:#5b4b3a">${voteLine}</div><div style="margin-top:10px;font-size:13px;color:var(--muted)">Click <strong>Close</strong> when you're ready.</div></div>`;
+        openModalContent(titleText, html);
+        createSparkles(12, 950);
+        launchConfetti();
       }
-      // ---------- voting logic ----------
+
+      // ---------- submit vote ----------
       function setVoteButtonState(isWorking) {
         if (!voteBtn) return;
         voteBtn.disabled = !!isWorking;
-        voteBtn.style.opacity = isWorking ? 0.6 : 1;
+        voteBtn.style.opacity = isWorking ? 0.5 : 1;
         voteBtn.textContent = isWorking
           ? "Submitting..."
           : "Submit Your Prediction";
@@ -904,7 +1105,6 @@
           return;
         }
         setVoteButtonState(true);
-        // read previous
         let previousVote = "";
         try {
           const snap = await get(ref(db, `votes/${myUid}`));
@@ -923,6 +1123,10 @@
         };
         try {
           await set(ref(db, `votes/${myUid}`), payload);
+          await set(
+            ref(db, `lastVote`),
+            Object.assign({ uid: myUid }, payload)
+          );
           console.log("Vote written to Firebase", payload);
         } catch (e) {
           console.error("Firebase write failed", e);
@@ -930,7 +1134,6 @@
           setVoteButtonState(false);
           return;
         }
-        // send to Formspree (best-effort)
         try {
           const body = {
             event: "vote",
@@ -953,24 +1156,37 @@
         setVoteButtonState(false);
       }
 
-      // UI selection
-      choices.forEach((c) => {
+      // ---------- UI handlers ----------
+      choices.forEach((c, i) => {
         c.addEventListener("click", () => {
           choices.forEach((x) => x.classList.remove("selected"));
           c.classList.add("selected");
           selectedValue = c.dataset.value;
+          updateVoteButtonState();
         });
         c.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             c.click();
           }
+          if (e.key === "ArrowDown" || e.key === "ArrowRight")
+            choices[(i + 1) % choices.length].focus();
+          if (e.key === "ArrowUp" || e.key === "ArrowLeft")
+            choices[(i - 1 + choices.length) % choices.length].focus();
         });
       });
 
+      relInput.addEventListener("input", () => updateVoteButtonState());
+      nameInput.addEventListener("input", () => {});
+
       voteBtn.addEventListener("click", async () => {
         if (!selectedValue) {
-          alert("Please select Boy or Girl.");
+          alert("Please select Baby Boy Gang or Baby Girl Gang.");
+          return;
+        }
+        if (!(relInput.value || "").trim()) {
+          alert("Please enter your relation (required).");
+          relInput.focus();
           return;
         }
         await submitVote(selectedValue);
@@ -984,15 +1200,14 @@
         showThankYou(who, selectedValue);
       });
 
-      // share
       shareBtn.addEventListener("click", () => {
         const txt = encodeURIComponent(
-          `Join Aman & Akanksha’s Royal Baby Reveal — Cast your prediction: ${location.href}`
+          `Join Aman & Akanksha’s Baby — Cast your prediction: ${location.href}`
         );
         if (navigator.share)
           navigator
             .share({
-              title: "Royal Baby Reveal",
+              title: "Welcome Little One — Cast Your Vote",
               text: "Make your prediction!",
               url: location.href,
             })
@@ -1000,13 +1215,11 @@
         else window.open("https://wa.me/?text=" + txt, "_blank");
       });
 
-      // modal close handlers
       modalClose.addEventListener("click", () => closeModalSafe());
       modalWrap.addEventListener("click", (e) => {
         if (e.target === modalWrap) closeModalSafe();
       });
 
-      // countdown
       function updateCountdown() {
         const now = new Date();
         const diff = revealDate.getTime() - now.getTime();
@@ -1031,17 +1244,9 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      // keyboard nav for choices
-      choices.forEach((c, i) =>
-        c.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowDown" || e.key === "ArrowRight")
-            choices[(i + 1) % choices.length].focus();
-          if (e.key === "ArrowUp" || e.key === "ArrowLeft")
-            choices[(i - 1 + choices.length) % choices.length].focus();
-        })
+      console.log(
+        "Page initialized — waiting for Firebase auth & realtime updates."
       );
-
-      console.log("Script initialized, waiting for auth...");
     </script>
   </body>
 </html>
