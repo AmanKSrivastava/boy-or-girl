@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Royal Baby Reveal — Boy or Girl</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold: #d4af37;
+        --cream: #fff9f0;
+        --rose: #ff9cb2;
+        --royal: #6ea8ff;
+        --bg1: #fffaf4;
+        --bg2: #f1e5c7;
+        --text: #3a2f1e;
+        --muted: #8c7b60;
+        --card-bg: rgba(255, 255, 255, 0.66);
+        --radius: 20px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial;
+        background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+      }
+
+      .wrap {
+        width: 100%;
+        max-width: 960px;
+      }
+      .card {
+        background: var(--card-bg);
+        border-radius: calc(var(--radius) + 6px);
+        border: 1px solid rgba(212, 175, 55, 0.24);
+        box-shadow: 0 24px 70px rgba(180, 145, 45, 0.2);
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Golden shimmer header */
+      .header {
+        text-align: center;
+        margin-bottom: 12px;
+        position: relative;
+        padding: 8px 0;
+      }
+      .crest {
+        font-family: "Playfair Display", serif;
+        font-size: 40px;
+        color: var(--text);
+      }
+      .title {
+        font-family: "Playfair Display", serif;
+        font-size: 30px;
+        margin: 6px 0 4px;
+        color: var(--text);
+        display: inline-block;
+        position: relative;
+        padding: 6px 14px;
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.35),
+          rgba(255, 255, 255, 0.1)
+        );
+        border: 1px solid rgba(212, 175, 55, 0.18);
+      }
+      /* shimmer */
+      .title::before {
+        content: "";
+        position: absolute;
+        left: -60%;
+        top: 0;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.6),
+          rgba(255, 255, 255, 0)
+        );
+        transform: skewX(-20deg);
+        animation: shimmer 3.8s linear infinite;
+        border-radius: 12px;
+        mix-blend-mode: overlay;
+      }
+      @keyframes shimmer {
+        0% {
+          left: -60%;
+        }
+        50% {
+          left: 120%;
+        }
+        100% {
+          left: 120%;
+        }
+      }
+
+      .sub {
+        color: var(--muted);
+        margin: 0 0 18px;
+        font-size: 14px;
+      }
+
+      /* team counts (single source-of-truth) */
+      .teams {
+        display: flex;
+        gap: 18px;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .team-pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.65),
+          rgba(255, 255, 255, 0.55)
+        );
+        border: 1px solid rgba(212, 175, 55, 0.16);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.06);
+        min-width: 160px;
+        justify-content: center;
+      }
+      .team-pill .label {
+        font-weight: 700;
+        color: var(--muted);
+        margin-right: 8px;
+      }
+      .team-pill .count {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        color: var(--gold);
+        font-size: 18px;
+      }
+
+      /* layout for choices + panel */
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 22px;
+        align-items: start;
+      }
+      @media (max-width: 880px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .choices {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .choice {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(255, 255, 255, 0.64)
+        );
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid rgba(212, 175, 55, 0.14);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.18s ease, box-shadow 0.18s ease,
+          border-color 0.18s ease;
+      }
+      .choice:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+      }
+      .choice.selected {
+        transform: translateY(-12px);
+        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
+        border-color: rgba(212, 175, 55, 0.28);
+      }
+      .emoji {
+        font-size: 44px;
+        width: 64px;
+        text-align: center;
+      }
+      .meta {
+        display: flex;
+        flex-direction: column;
+      }
+      .titleSmall {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+      .desc {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .choice::after {
+        content: "";
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 16px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      }
+      .choice.selected::after {
+        display: flex;
+      }
+      .choice#boy.selected::after {
+        background: linear-gradient(135deg, #f9e6b0, #f3d67a);
+        color: #3a2f1e;
+        content: "✔";
+      }
+      .choice#girl.selected::after {
+        background: linear-gradient(135deg, #ffdbe6, #ffc0d1);
+        color: #3a2f1e;
+        content: "✔";
+      }
+
+      /* right panel */
+      .panel {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.72),
+          rgba(255, 255, 255, 0.64)
+        );
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid rgba(212, 175, 55, 0.14);
+      }
+      .panel h3 {
+        margin: 0 0 8px;
+        font-family: "Playfair Display", serif;
+      }
+      .inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .inputs input {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(212, 175, 55, 0.12);
+        background: transparent;
+      }
+      .cta {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btnMain {
+        background: linear-gradient(90deg, #f9e6b0, #f3d67a);
+        border: 0;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-weight: 800;
+        cursor: pointer;
+        color: #3a2f1e;
+      }
+      .btnGhost {
+        background: transparent;
+        border: 1px dashed rgba(212, 175, 55, 0.18);
+        padding: 10px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--muted);
+      }
+
+      /* countdown */
+      .countdown {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .countCard {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 10px;
+        padding: 8px 10px;
+        border: 1px solid rgba(212, 175, 55, 0.12);
+        min-width: 64px;
+        text-align: center;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .countLabel {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      /* results removed from right panel per request - counts only at top */
+
+      footer {
+        margin-top: 18px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      /* thank you modal */
+      .modalWrap {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 10, 10, 0.4);
+        z-index: 999;
+      }
+      .modal {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        max-width: 420px;
+        width: 92%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        text-align: center;
+      }
+      .modal h2 {
+        margin: 0 0 8px;
+        font-family: "Playfair Display", serif;
+        color: #2b1f14;
+      }
+      .modal p {
+        color: #5b4b3a;
+        margin: 8px 0 12px;
+      }
+      .modal .btn {
+        margin-top: 6px;
+      }
+
+      /* audio control & enable button */
+      .audioCtl {
+        position: absolute;
+        right: 16px;
+        top: 14px;
+        background: transparent;
+        border: 1px solid rgba(212, 175, 55, 0.12);
+        padding: 8px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--muted);
+      }
+      .enableSound {
+        position: fixed;
+        left: 50%;
+        top: 14px;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #f9e6b0, #f3d67a);
+        border: 0;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        display: none;
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      /* confetti canvas */
+      #confetti {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      @media (max-width: 880px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .teams {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .team-pill {
+          min-width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card" id="card">
+        <canvas id="confetti"></canvas>
+
+        <button
+          id="audioToggle"
+          class="audioCtl"
+          aria-label="Play music (toggle)"
+        >
+          🔈 Pause music
+        </button>
+        <button id="enableSound" class="enableSound" style="display: none">
+          Enable sound
+        </button>
+
+        <div class="header">
+          <div class="crest">👑</div>
+          <div class="title">Royal Baby Reveal</div>
+          <p class="sub">
+            Aman & Akanksha invite you — predict whether it will be a prince or
+            princess
+          </p>
+        </div>
+
+        <div class="teams" aria-hidden="false">
+          <div class="team-pill">
+            <span class="label">Boy Votes</span
+            ><span class="count" id="boyCount">0</span>
+          </div>
+          <div class="team-pill">
+            <span class="label">Girl Votes</span
+            ><span class="count" id="girlCount">0</span>
+          </div>
+        </div>
+
+        <div class="grid">
+          <!-- choices -->
+          <div class="choices">
+            <div
+              class="choice"
+              id="boy"
+              data-value="boy"
+              role="button"
+              tabindex="0"
+              aria-pressed="false"
+            >
+              <div class="emoji">🤴💙</div>
+              <div class="meta">
+                <div class="titleSmall">It's a Boy!</div>
+                <div class="desc">Choose if you predict a little prince</div>
+              </div>
+            </div>
+
+            <div
+              class="choice"
+              id="girl"
+              data-value="girl"
+              role="button"
+              tabindex="0"
+              aria-pressed="false"
+            >
+              <div class="emoji">👸💖</div>
+              <div class="meta">
+                <div class="titleSmall">It's a Girl!</div>
+                <div class="desc">Choose if you predict a little princess</div>
+              </div>
+            </div>
+
+            <!-- small countdown for mobile -->
+            <div
+              style="margin-top: 8px; display: flex; justify-content: center"
+            >
+              <div style="text-align: center">
+                <div style="font-weight: 800; color: var(--muted)">
+                  Reveal Countdown
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    gap: 8px;
+                    justify-content: center;
+                    margin-top: 8px;
+                  "
+                  id="countdownSmall"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right panel -->
+          <div class="panel">
+            <h3>Make your prediction</h3>
+            <div style="font-size: 13px; color: var(--muted)">
+              Reveal Date: <strong>14 November 2025</strong>
+            </div>
+
+            <div class="countdown" style="margin-top: 12px" id="countdown">
+              <div class="countCard">
+                <div id="cdDays">0</div>
+                <div class="countLabel">Days</div>
+              </div>
+              <div class="countCard">
+                <div id="cdHours">0</div>
+                <div class="countLabel">Hours</div>
+              </div>
+              <div class="countCard">
+                <div id="cdMins">0</div>
+                <div class="countLabel">Mins</div>
+              </div>
+              <div class="countCard">
+                <div id="cdSecs">0</div>
+                <div class="countLabel">Secs</div>
+              </div>
+            </div>
+
+            <div class="inputs" style="margin-top: 14px">
+              <input id="name" placeholder="Your Name (optional)" />
+              <input
+                id="relation"
+                placeholder="Relation (e.g., Masi, Chachu)"
+              />
+            </div>
+
+            <div class="cta">
+              <button class="btnMain" id="voteBtn">
+                Submit Your Prediction
+              </button>
+              <button class="btnGhost" id="shareBtn">Share</button>
+            </div>
+
+            <div style="margin-top: 12px; font-size: 13px; color: var(--muted)">
+              Tip: Enter your name to get a personalized thank-you after voting.
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          Made with love for Aman & Akanksha — replace Formspree endpoint to
+          store results.
+        </footer>
+      </div>
+    </div>
+
+    <!-- Thank you modal -->
+    <div
+      class="modalWrap"
+      id="modalWrap"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="modal" role="document">
+        <h2 id="modalTitle">Thank you!</h2>
+        <p id="modalMsg">We appreciate your prediction.</p>
+        <button class="btnMain" id="modalClose">Close</button>
+      </div>
+    </div>
+
+    <!-- Audio: replace src with your audio file URL if you have one -->
+    <audio id="bgAudio" loop preload="auto">
+      <source
+        src="https://cdn.pixabay.com/download/audio/2022/02/08/audio_2b0f7b33a8.mp3?filename=calm-and-relaxing-ambient-11506.mp3"
+        type="audio/mpeg"
+      />
+      Your browser does not support audio.
+    </audio>
+
+    <!-- Firebase + App logic (anonymous auth + realtime votes) -->
+    <script type="module">
+      // Firebase SDK (modular) imports
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+      // --- YOUR FIREBASE CONFIG (you provided) ---
+      const firebaseConfig = {
+        apiKey: "AIzaSyDJMam9PYVpprTjX-hSx4zqoqkp5AOEQaA",
+        authDomain: "baby-prediction-2947c.firebaseapp.com",
+        projectId: "baby-prediction-2947c",
+        storageBucket: "baby-prediction-2947c.firebasestorage.app",
+        messagingSenderId: "746431850655",
+        appId: "1:746431850655:web:2d3d4cddf4e7fa6e855aaa",
+        measurementId: "G-Y4LQT2ZRD5",
+      };
+
+      // initialize
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      // Elements & UI
+      const choices = Array.from(document.querySelectorAll(".choice"));
+      const boyCountEl = document.getElementById("boyCount");
+      const girlCountEl = document.getElementById("girlCount");
+      const voteBtn = document.getElementById("voteBtn");
+      const shareBtn = document.getElementById("shareBtn");
+      const nameInput = document.getElementById("name");
+      const relInput = document.getElementById("relation");
+
+      // Modal
+      const modalWrap = document.getElementById("modalWrap");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalMsg = document.getElementById("modalMsg");
+      const modalClose = document.getElementById("modalClose");
+
+      // Audio controls (kept)
+      const audio = document.getElementById("bgAudio");
+      const audioToggle = document.getElementById("audioToggle");
+      const enableSoundBtn = document.getElementById("enableSound");
+      let audioPlaying = false;
+      let autoplayAttempted = false;
+
+      // Countdown (target date)
+      const revealDate = new Date("2025-11-14T00:00:00");
+      const cdDays = document.getElementById("cdDays");
+      const cdHours = document.getElementById("cdHours");
+      const cdMins = document.getElementById("cdMins");
+      const cdSecs = document.getElementById("cdSecs");
+      const countdownSmall = document.getElementById("countdownSmall");
+
+      // firebase state
+      let myUid = null;
+
+      // anonymous auth
+      async function startAuth() {
+        try {
+          await signInAnonymously(auth);
+        } catch (err) {
+          console.error("Auth error", err);
+        }
+      }
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          myUid = user.uid;
+          // console.log('Signed in as', myUid);
+        } else {
+          myUid = null;
+        }
+      });
+      startAuth();
+
+      // Listen to /votes and compute counts in realtime
+      const votesRef = ref(db, "votes");
+      onValue(votesRef, (snap) => {
+        const data = snap.val() || {};
+        let boy = 0,
+          girl = 0;
+        // iterate votes
+        for (const uid in data) {
+          const v = data[uid] && data[uid].vote;
+          if (v === "boy") boy++;
+          if (v === "girl") girl++;
+        }
+        // update top counts (single source of truth)
+        boyCountEl.textContent = boy;
+        girlCountEl.textContent = girl;
+
+        // reflect my selection (if my vote exists in DB)
+        if (myUid && data[myUid]) {
+          const myVote = data[myUid].vote;
+          choices.forEach((c) =>
+            c.classList.toggle("selected", c.dataset.value === myVote)
+          );
+        }
+      });
+
+      // helper to submit vote (writes to /votes/{myUid})
+      async function submitVote(voteValue) {
+        if (!myUid) {
+          // try sign-in again (rare)
+          await startAuth();
+          // short delay to let auth state propagate
+          await new Promise((r) => setTimeout(r, 300));
+        }
+        if (!myUid) {
+          alert("Unable to sign in. Please try again.");
+          return;
+        }
+        const payload = {
+          vote: voteValue,
+          name: (nameInput && nameInput.value.trim()) || "",
+          relation: (relInput && relInput.value.trim()) || "",
+          time: new Date().toISOString(),
+        };
+        try {
+          await set(ref(db, `votes/${myUid}`), payload);
+          // realtime listener updates UI automatically
+        } catch (err) {
+          console.error("Error writing vote:", err);
+          alert("Could not record vote — check your connection.");
+        }
+      }
+
+      // UI selection logic
+      let selectedValue = null;
+      choices.forEach((c) => {
+        c.addEventListener("click", () => {
+          choices.forEach((x) => x.classList.remove("selected"));
+          c.classList.add("selected");
+          selectedValue = c.dataset.value;
+        });
+        c.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            c.click();
+          }
+        });
+      });
+
+      // Vote button handler — overwrites previous vote in DB
+      voteBtn.addEventListener("click", async () => {
+        const toVote = selectedValue;
+        if (!toVote) {
+          alert("Please select Boy or Girl to vote.");
+          return;
+        }
+        await submitVote(toVote);
+
+        // show personalized thank you
+        const nm = nameInput.value.trim();
+        const rel = relInput.value.trim();
+        const who = nm
+          ? `${nm}${rel ? " (" + rel + ")" : ""}`
+          : rel
+          ? rel
+          : "Friend";
+        showThankYou(who, toVote);
+        launchConfetti();
+      });
+
+      // Share
+      shareBtn.addEventListener("click", () => {
+        const txt = encodeURIComponent(
+          `Join Aman & Akanksha’s Royal Baby Reveal — Cast your prediction: ${location.href}`
+        );
+        if (navigator.share) {
+          navigator
+            .share({
+              title: "Royal Baby Reveal",
+              text: "Make your prediction!",
+              url: location.href,
+            })
+            .catch(() => {});
+        } else window.open("https://wa.me/?text=" + txt, "_blank");
+      });
+
+      // Thank you modal
+      function showThankYou(who, vote) {
+        modalTitle.textContent = `Thank you, ${who}!`;
+        modalMsg.innerHTML = `Your royal prediction is recorded: <strong>${
+          vote === "boy" ? "Prince 👑" : "Princess 👑"
+        }</strong>.<br/>We appreciate your blessings.`;
+        modalWrap.style.display = "flex";
+        modalWrap.setAttribute("aria-hidden", "false");
+        setTimeout(() => closeModal(), 4000);
+      }
+      function closeModal() {
+        modalWrap.style.display = "none";
+        modalWrap.setAttribute("aria-hidden", "true");
+      }
+      modalClose.addEventListener("click", closeModal);
+      modalWrap.addEventListener("click", (e) => {
+        if (e.target === modalWrap) closeModal();
+      });
+
+      // Countdown
+      function updateCountdown() {
+        const now = new Date();
+        const diff = revealDate.getTime() - now.getTime();
+        if (diff <= 0) {
+          cdDays.textContent = "0";
+          cdHours.textContent = "0";
+          cdMins.textContent = "0";
+          cdSecs.textContent = "0";
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+        cdDays.textContent = days;
+        cdHours.textContent = hours;
+        cdMins.textContent = mins;
+        cdSecs.textContent = secs;
+
+        if (countdownSmall) {
+          countdownSmall.innerHTML = "";
+          const parts = [
+            { v: days, l: "D" },
+            { v: hours, l: "H" },
+            { v: mins, l: "M" },
+            { v: secs, l: "S" },
+          ];
+          parts.forEach((p) => {
+            const el = document.createElement("div");
+            el.style.cssText =
+              "background:rgba(255,255,255,0.78);border-radius:8px;padding:6px 8px;margin:0 4px;font-weight:700;color:var(--text)";
+            el.innerHTML = `<div style="font-size:14px">${p.v}</div><div style="font-size:11px;color:var(--muted)">${p.l}</div>`;
+            countdownSmall.appendChild(el);
+          });
+        }
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      // Confetti canvas (kept)
+      const canvas = document.getElementById("confetti");
+      const ctx = canvas.getContext && canvas.getContext("2d");
+      let confetti = [];
+      let anim = false;
+      function resizeCanvas() {
+        if (!ctx) return;
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      function launchConfetti() {
+        if (!ctx) return;
+        for (let i = 0; i < 70; i++) {
+          confetti.push({
+            x: Math.random() * canvas.width,
+            y: (-Math.random() * canvas.height) / 2,
+            w: 6 + Math.random() * 10,
+            h: 8 + Math.random() * 10,
+            vx: (Math.random() - 0.5) * 4,
+            vy: 2 + Math.random() * 4,
+            rot: Math.random() * 360,
+            vr: (Math.random() - 0.5) * 8,
+            color: ["#d4af37", "#f9e6b0", "#ffd37a"][
+              Math.floor(Math.random() * 3)
+            ],
+          });
+        }
+        if (!anim) animateConfetti();
+      }
+      function animateConfetti() {
+        anim = true;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = confetti.length - 1; i >= 0; i--) {
+          const p = confetti[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.06;
+          p.rot += p.vr;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+          if (p.y > canvas.height + 50) confetti.splice(i, 1);
+        }
+        if (confetti.length) requestAnimationFrame(animateConfetti);
+        else {
+          anim = false;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      // AUTOPLAY MUSIC — best-effort with fallback button
+      async function tryAutoplay() {
+        if (autoplayAttempted) return;
+        autoplayAttempted = true;
+        try {
+          audio.volume = 0.9;
+          await audio.play();
+          audioPlaying = true;
+          audioToggle.textContent = "🔊 Pause music";
+          enableSoundBtn.style.display = "none";
+        } catch (err) {
+          enableSoundBtn.style.display = "inline-block";
+          audioPlaying = false;
+          audioToggle.textContent = "🔈 Play music";
+        }
+      }
+      window.addEventListener("load", () => {
+        tryAutoplay();
+      });
+
+      audioToggle.addEventListener("click", () => {
+        if (audioPlaying) {
+          audio.pause();
+          audioPlaying = false;
+          audioToggle.textContent = "🔈 Play music";
+        } else {
+          audio.play().catch(() => {
+            enableSoundBtn.style.display = "inline-block";
+          });
+          audioPlaying = true;
+          audioToggle.textContent = "🔊 Pause music";
+        }
+      });
+      enableSoundBtn.addEventListener("click", () => {
+        audio
+          .play()
+          .then(() => {
+            audioPlaying = true;
+            audioToggle.textContent = "🔊 Pause music";
+            enableSoundBtn.style.display = "none";
+          })
+          .catch(() => {});
+      });
+
+      // keyboard nav
+      choices.forEach((c, i) =>
+        c.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowDown" || e.key === "ArrowRight")
+            choices[(i + 1) % choices.length].focus();
+          if (e.key === "ArrowUp" || e.key === "ArrowLeft")
+            choices[(i - 1 + choices.length) % choices.length].focus();
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            c.click();
+          }
+        })
+      );
+    </script>
+  </body>
+</html>
