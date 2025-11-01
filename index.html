@@ -775,10 +775,17 @@
             </div>
 
             <div class="inputs" style="margin-top: 12px">
-              <input id="name" placeholder="Your Name" required />
+              <input
+                id="name"
+                placeholder="Your Name (required)"
+                required
+                aria-required="true"
+              />
               <input
                 id="relation"
                 placeholder="Relation (required — e.g., Papa, Masi)"
+                required
+                aria-required="true"
               />
             </div>
 
@@ -1282,8 +1289,15 @@
 
       // vote button enabling logic: only require relation + authReady
       function updateVoteButtonState() {
+        const nameFilled = (nameInput.value || "").trim().length > 0;
         const relFilled = (relInput.value || "").trim().length > 0;
-        voteBtn.disabled = !(relFilled && authReady);
+        const selectionMade = !!selectedValue; // check if user picked boy/girl
+        voteBtn.disabled = !(
+          authReady &&
+          nameFilled &&
+          relFilled &&
+          selectionMade
+        );
         voteBtn.style.opacity = voteBtn.disabled ? 0.55 : 1;
       }
 
@@ -1377,7 +1391,8 @@
         });
       });
 
-      relInput.addEventListener("input", () => updateVoteButtonState());
+      nameInput.addEventListener("input", updateVoteButtonState);
+      relInput.addEventListener("input", updateVoteButtonState);
 
       voteBtn.addEventListener("click", async () => {
         if (!selectedValue) {
@@ -1387,6 +1402,11 @@
         if (!(relInput.value || "").trim()) {
           notifyMissingRelation();
           relInput.focus();
+          return;
+        }
+        if (!(nameInput.value || "").trim()) {
+          showToast("Please enter your name (required).", "info", 3500);
+          nameInput.focus();
           return;
         }
         await submitVote(selectedValue);
