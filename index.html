@@ -1139,10 +1139,10 @@
               val.vote === "boy" ? "Baby Boy Gang" : "Baby Girl Gang";
             const prettyAgo = timeAgo(val.time);
             const exact = formatExactLocal(val.time);
-            latestSupporterEl.textContent = `Last Vote: ${displayName} — ${gang} ${heart}${
+            latestSupporterEl.textContent = `Last Vote: ${displayName} — ${heart}${
               prettyAgo ? " · " + prettyAgo : ""
             }`;
-            latestSupporterEl.title = `${displayName} — ${gang} (${exact})`;
+            latestSupporterEl.title = `${displayName} — (${exact})`;
           },
           (err) => {
             console.error("Realtime listener error (lastVote):", err);
