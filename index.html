@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -39,9 +39,16 @@
         margin: 0;
       }
       body {
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial;
-        background: radial-gradient(
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial;
+        background:
+          radial-gradient(
             1200px 600px at 10% 10%,
             rgba(212, 175, 55, 0.06),
             transparent 8%
@@ -185,7 +192,10 @@
           rgba(255, 255, 255, 0.95)
         );
         border: 1px solid rgba(0, 0, 0, 0.04);
-        transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
+        transition:
+          transform 0.28s,
+          box-shadow 0.28s,
+          border-color 0.28s;
       }
       .team-card.leader {
         transform: translateY(-8px);
@@ -275,7 +285,10 @@
         );
         cursor: pointer;
         position: relative;
-        transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+        transition:
+          transform 0.18s,
+          box-shadow 0.18s,
+          border-color 0.18s;
       }
       .choice:hover {
         transform: translateY(-6px);
@@ -481,7 +494,8 @@
         height: 9px;
         border-radius: 50%;
         background: linear-gradient(180deg, #fff9da, #ffd37a);
-        box-shadow: 0 0 8px rgba(212, 175, 55, 0.9),
+        box-shadow:
+          0 0 8px rgba(212, 175, 55, 0.9),
           0 0 18px rgba(212, 175, 55, 0.35);
         opacity: 0;
         transform: scale(0.2) translateY(0);
@@ -489,7 +503,8 @@
       }
       .sparkles .spark.pink {
         background: linear-gradient(180deg, #fff0f8, #ffbed8);
-        box-shadow: 0 0 8px rgba(255, 156, 178, 0.9),
+        box-shadow:
+          0 0 8px rgba(255, 156, 178, 0.9),
           0 0 18px rgba(255, 156, 178, 0.28);
       }
       @keyframes sparkle-pop {
@@ -647,7 +662,7 @@
             <div class="brand-text">
               <div class="title">Welcome Little One — Cast Your Vote</div>
               <div class="subtitle">
-                Aman & Akanksha — Pick a side and bless the little one
+                Prashant & Aparna — Pick a side and bless the little one
               </div>
             </div>
           </div>
@@ -810,7 +825,7 @@
             font-size: 13px;
           "
         >
-          With love, Aman & Akanksha
+          With love, Prashant & Aparna
         </footer>
       </div>
     </div>
@@ -931,8 +946,8 @@
           (type === "success"
             ? "success"
             : type === "error"
-            ? "error"
-            : "info");
+              ? "error"
+              : "info");
         div.id = id;
         div.setAttribute("role", "status");
         div.setAttribute("aria-live", "polite");
@@ -957,28 +972,28 @@
         showToast(
           "Please pick Baby Boy Gang or Baby Girl Gang before submitting.",
           "info",
-          3500
+          3500,
         );
       }
       function notifyMissingRelation() {
         showToast(
           "Relation is required — please enter it so we can say thank you properly.",
           "info",
-          3500
+          3500,
         );
       }
       function notifyAuthPending() {
         showToast(
           "Still signing in — give us a second and try again.",
           "info",
-          3000
+          3000,
         );
       }
       function notifySaveError() {
         showToast(
           "Could not save vote. Please check your connection or try again later.",
           "error",
-          4500
+          4500,
         );
       }
       function notifySaved() {
@@ -1046,7 +1061,7 @@
           showToast(
             "Could not sign in anonymously. Check Firebase config.",
             "error",
-            5000
+            5000,
           );
         }
       }
@@ -1085,12 +1100,12 @@
             animateNumber(
               boyPercent,
               parseInt(boyPercent.textContent || 0),
-              boyP
+              boyP,
             );
             animateNumber(
               girlPercent,
               parseInt(girlPercent.textContent || 0),
-              girlP
+              girlP,
             );
 
             teamBoyCard.classList.toggle("leader", boy > girl);
@@ -1101,8 +1116,8 @@
               choices.forEach((c) =>
                 c.classList.toggle(
                   "selected",
-                  c.dataset.value === selectedValue
-                )
+                  c.dataset.value === selectedValue,
+                ),
               );
             }
 
@@ -1114,9 +1129,9 @@
             showToast(
               "Realtime listener error — check database rules.",
               "error",
-              4000
+              4000,
             );
-          }
+          },
         );
 
         const lastRef = ref(db, "lastVote");
@@ -1146,7 +1161,7 @@
           },
           (err) => {
             console.error("Realtime listener error (lastVote):", err);
-          }
+          },
         );
       }
 
@@ -1240,9 +1255,12 @@
           const delay = Math.random() * 220;
           s.style.animationDelay = delay + "ms";
           container.appendChild(s);
-          setTimeout(() => {
-            if (s && s.parentNode) s.parentNode.removeChild(s);
-          }, duration + delay + 80);
+          setTimeout(
+            () => {
+              if (s && s.parentNode) s.parentNode.removeChild(s);
+            },
+            duration + delay + 80,
+          );
         }
         setTimeout(() => {
           const cur = modalWrap.querySelector(".sparkles");
@@ -1337,7 +1355,7 @@
           await set(ref(db, `votes/${myUid}`), payload);
           await set(
             ref(db, `lastVote`),
-            Object.assign({ uid: myUid }, payload)
+            Object.assign({ uid: myUid }, payload),
           );
           notifySaved();
         } catch (e) {
@@ -1415,14 +1433,14 @@
         const who = nm
           ? `${nm}${rel ? " (" + rel + ")" : ""}`
           : rel
-          ? rel
-          : "Friend";
+            ? rel
+            : "Friend";
         showThankYou(who, selectedValue);
       });
 
       shareBtn.addEventListener("click", () => {
         const txt = encodeURIComponent(
-          `Join Aman & Akanksha’s Baby — Cast your prediction: ${location.href}`
+          `Join Prashant & Aparna's Baby — Cast your prediction: ${location.href}`,
         );
         if (navigator.share)
           navigator
@@ -1453,7 +1471,7 @@
         }
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         );
         const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const secs = Math.floor((diff % (1000 * 60)) / 1000);
@@ -1467,7 +1485,7 @@
 
       // initial console note
       console.log(
-        "Page initialized — waiting for Firebase auth & realtime updates."
+        "Page initialized — waiting for Firebase auth & realtime updates.",
       );
     </script>
   </body>
